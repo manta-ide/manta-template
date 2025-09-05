@@ -1,18 +1,9 @@
-import { defineConfig, Plugin } from 'vite';
+import { defineConfig, Plugin, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
+import fsp from 'fs/promises';
 
-// --- Compile-time injection like webpack.DefinePlugin(__GRAPH_VARS__) ---
-function loadGraphVars(): Record<string, string | number | boolean> {
-  try {
-    // Use native Vite JSON import for dev-time freshness without manual watcher
-    // Note: this path is relative to project root at build time
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    return require('./_graph/vars.json');
-  } catch {
-    return {};
-  }
-}
+// (no compile-time vars injection; vars are sourced from Supabase at runtime)
 
 /** Dev+Preview: set frame-ancestors so you can embed in the parent iframe */
 function frameHeaders(): Plugin {
@@ -38,52 +29,131 @@ function frameHeaders(): Plugin {
   };
 }
 
-export default defineConfig(({ mode }) => ({
-  plugins: [react(), frameHeaders()],
-  
-  resolve: {
-    alias: {
-      '@': resolve(__dirname, './src')
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '');
+
+  // Remote-capable HMR: configure via env when embedding or running behind a preview URL
+  // Set these in the container/preview environment to enable cross-origin HMR:
+  //   VITE_HMR_HOST=your.preview.host
+  //   VITE_HMR_PROTOCOL=ws|wss    (default 'wss' when host is set)
+  //   VITE_HMR_PORT=443|5173      (optional; omit to use scheme default)
+  const hmrHost = env.VITE_HMR_HOST || '';
+  const hmrProto = (env.VITE_HMR_PROTOCOL || (hmrHost ? 'wss' : 'ws')) as 'ws' | 'wss';
+  const hmrPort = env.VITE_HMR_PORT ? Number(env.VITE_HMR_PORT) : undefined;
+  const hmr: any = hmrHost
+    ? { protocol: hmrProto, host: hmrHost, ...(hmrPort ? { port: hmrPort } : {}) }
+    : { protocol: 'ws', host: 'localhost', port: 5173 };
+
+  // Simple middleware to read/write _graph/vars.json during dev/preview
+  function graphVarsMiddleware(): Plugin {
+    const route = '/__graph/vars';
+    const makeHandler = (rootDir: string) => {
+      const varsPath = resolve(rootDir, './_graph/vars.json');
+      const varsDir = resolve(rootDir, './_graph');
+      return async (req: any, res: any) => {
+        if (!req.url?.startsWith(route)) return false;
+        const method = (req.method || 'GET').toUpperCase();
+        try {
+          if (method === 'GET') {
+            const buf = await fsp.readFile(varsPath);
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.setHeader('Cache-Control', 'no-store');
+            res.end(buf);
+            return true;
+          }
+          if (method === 'POST' || method === 'PUT') {
+            const chunks: Buffer[] = [];
+            await new Promise<void>((resolvePromise, reject) => {
+              req.on('data', (c: Buffer) => chunks.push(c));
+              req.on('end', () => resolvePromise());
+              req.on('error', reject);
+            });
+            const bodyStr = Buffer.concat(chunks).toString('utf8');
+            let data: any = {};
+            try { data = JSON.parse(bodyStr || '{}'); } catch {}
+            await fsp.mkdir(varsDir, { recursive: true });
+            const tmpPath = resolve(varsDir, 'vars.tmp.json');
+            const finalStr = JSON.stringify(data, null, 2) + '\n';
+            await fsp.writeFile(tmpPath, finalStr, 'utf8');
+            await fsp.rename(tmpPath, varsPath);
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.setHeader('Cache-Control', 'no-store');
+            res.end(JSON.stringify({ ok: true }));
+            return true;
+          }
+          res.statusCode = 405;
+          res.end('Method Not Allowed');
+          return true;
+        } catch (err: any) {
+          res.statusCode = 500;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ ok: false, error: String(err?.message || err) }));
+          return true;
+        }
+      };
+    };
+    return {
+      name: 'graph-vars-middleware',
+      configureServer(server) {
+        const handler = makeHandler(server.config.root);
+        server.middlewares.use(async (req, res, next) => {
+          const handled = await handler(req, res);
+          if (!handled) next();
+        });
+      },
+      configurePreviewServer(server) {
+        const handler = makeHandler(server.config.root);
+        server.middlewares.use(async (req, res, next) => {
+          const handled = await handler(req, res);
+          if (!handled) next();
+        });
+      },
+    };
+  }
+
+  return ({
+    plugins: [react(), frameHeaders(), graphVarsMiddleware()],
+    
+    resolve: {
+      alias: {
+        '@': resolve(__dirname, './src')
+      },
     },
-  },
 
-  /**
-   * IMPORTANT: keep everything under /iframe/ so the parent Next rewrite
-   *  { source: '/iframe/:path*', destination: 'http://localhost:3001/iframe/:path*' }
-   * can proxy ALL dev requests (HTML, modules, HMR, assets).
-   */
-  base: '/iframe/',
+    /**
+     * Serve the preview app at the root of the preview host.
+     * The Next.js app still mounts it at `/iframe` via a proxy, but the proxy
+     * forwards `/iframe/*` to the preview root (`/`).
+     */
+    base: '/',
 
-  define: {
-    __GRAPH_VARS__: JSON.stringify(loadGraphVars()),
-  },
+    // No compile-time vars; app pulls from Supabase
 
-  // Serve on the same port your parent rewrites to
-  server: {
-    watch: {
-      usePolling: true,
-    },
-    host: true,
-    port: 5173,
-    cors: true,
-    allowedHosts: true,
-    // HMR: connect directly to Vite even though the page is shown under the parent.
-    // Cross-origin WS is fine; this avoids relying on the parent to proxy WS upgrades.
-    hmr: {
-      protocol: 'ws',
-      host: 'localhost',
+    // Dev server
+    server: {
+      watch: {
+        usePolling: true,
+        // Avoid dev-server reloads when we persist _graph/vars.json
+        ignored: ['**/_graph/vars.json'],
+      },
+      host: true,
       port: 5173,
-      // path defaults to `${base}@vite` → "/iframe/@vite"
+      cors: true,
+      allowedHosts: true,
+      // Cross-origin HMR supported; when VITE_HMR_HOST is set, connect directly to remote.
+      hmr,
     },
-  },
 
-  // Optional: if you also use `vite preview`
-  preview: {
-    allowedHosts: true,
-    host: true,
-    port: 5173,
-  },
+    // Preview server
+    preview: {
+      allowedHosts: true,
+      host: true,
+      port: 5173,
+    },
 
-  // SPA fallback means Vite will serve index.html at /iframe, /iframe/foo, etc.
-  appType: 'spa',
-}));
+    // SPA fallback means Vite will serve index.html at / and nested routes.
+    appType: 'spa',
+  });
+});
