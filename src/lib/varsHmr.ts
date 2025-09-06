@@ -95,6 +95,7 @@ function getSupabase(): SupabaseClient | null {
 async function fetchInitialVars(): Promise<Vars> {
   // Prefer local graph vars for initial load
   try {
+    console.log('fetchInitialVars');
     const base = (typeof window !== 'undefined' && (window.location.pathname === '/iframe' || window.location.pathname.startsWith('/iframe/')))
       ? '/iframe'
       : '';
@@ -104,6 +105,7 @@ async function fetchInitialVars(): Promise<Vars> {
     if (json && typeof json === 'object') {
       return json as Vars;
     }
+
   } catch (e) {
     console.warn('Failed to load /_graph/vars.json, falling back to empty vars:', e);
   }
