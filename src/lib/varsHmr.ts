@@ -202,10 +202,12 @@ export function enableParentVarBridge() {
   const handler = (ev: MessageEvent) => {
     const data: any = ev?.data || {};
     if (!data || (data.type !== 'manta:vars' && data.type !== 'manta:vars:update')) return;
+    try { console.debug('[varsHmr] received vars update from parent:', data); } catch {}
     const updates = data.updates || {};
     if (updates && typeof updates === 'object') {
       currentVars = { ...currentVars, ...updates };
       applyCssVarsFrom(currentVars);
+      try { console.debug('[varsHmr] applied vars, keys:', Object.keys(updates)); } catch {}
       // Persist to vars.json in background (debounced)
       persistVarsJsonDebounced(currentVars);
     }
