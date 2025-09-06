@@ -1,10 +1,6 @@
-import { createClient, SupabaseClient } from "@supabase/supabase-js";
-
 export type Vars = Record<string, any>;
 
-let supabase: SupabaseClient | null = null;
 let currentVars: Vars = {};
-
 
 function ensureGoogleFontLoaded(family: string | undefined) {
   if (!family) return;
@@ -75,37 +71,15 @@ function applyCssVarsFrom(vars: Vars) {
   });
 }
 
-function resolveEnv(name: string): string | undefined {
-  // Vite exposes import.meta.env; fall back to process.env if available
-  // @ts-ignore
-  return (typeof import.meta !== "undefined" && (import.meta as any).env && (import.meta as any).env[name])
-    // @ts-ignore
-    || (typeof process !== "undefined" ? (process.env as any)[name] : undefined);
-}
-
-function getSupabase(): SupabaseClient | null {
-  if (supabase) return supabase;
-  const url = resolveEnv("VITE_SUPABASE_URL");
-  const anon = resolveEnv("VITE_SUPABASE_ANON_KEY");
-  if (!url || !anon) return null;
-  supabase = createClient(url, anon);
-  return supabase;
-}
-
 async function fetchInitialVars(): Promise<Vars> {
   // Prefer local graph vars for initial load
   try {
-    console.log('fetchInitialVars');
-    const base = (typeof window !== 'undefined' && (window.location.pathname === '/iframe' || window.location.pathname.startsWith('/iframe/')))
-      ? '/iframe'
-      : '';
-    const res = await fetch(`${base}/_graph/vars.json`, { cache: 'no-store' });
+    const res = await fetch(`/_graph/vars.json`, { cache: 'no-store' });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json = await res.json();
     if (json && typeof json === 'object') {
       return json as Vars;
     }
-
   } catch (e) {
     console.warn('Failed to load /_graph/vars.json, falling back to empty vars:', e);
   }
@@ -118,10 +92,7 @@ async function persistVarsJsonDebounced(nextVars: Vars, delay = 200) {
   if (persistTimer) clearTimeout(persistTimer);
   persistTimer = setTimeout(async () => {
     try {
-      const base = (typeof window !== 'undefined' && (window.location.pathname === '/iframe' || window.location.pathname.startsWith('/iframe/')))
-        ? '/iframe'
-        : '';
-      await fetch(`${base}/__graph/vars`, {
+      await fetch(`/__graph/vars`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(nextVars),
@@ -134,63 +105,12 @@ async function persistVarsJsonDebounced(nextVars: Vars, delay = 200) {
 }
 
 export function subscribeVars(onUpdate: (vars: Vars) => void) {
-  const client = getSupabase();
-  const userRoomId = resolveEnv("VITE_USER_ID");
-
   // Emit initial vars (async fetch), then listen to broadcasts for updates
   fetchInitialVars().then((vars) => {
     currentVars = vars || {};
     applyCssVarsFrom(currentVars);
     onUpdate(currentVars);
   });
-
-  if (!client) return;
-
-  const subscribeRoom = (room: string) => client
-    .channel(room, { config: { broadcast: { self: true, ack: false } } })
-    // Next app broadcasts 'property' with { nodeId, property: { id, value } }
-    .on("broadcast", { event: "property" }, (payload) => {
-      const data = (payload as any)?.payload || {};
-      const prop = data.property || {};
-      if (prop?.id !== undefined) {
-        currentVars = { ...currentVars, [prop.id]: prop.value };
-        applyCssVarsFrom(currentVars);
-        onUpdate(currentVars);
-        // Persist to local vars.json asynchronously
-        persistVarsJsonDebounced(currentVars);
-      }
-    })
-    // Also handle 'property_update' with { nodeId, propertyId, value }
-    .on("broadcast", { event: "property_update" }, (payload) => {
-      const data = (payload as any)?.payload || {};
-      if (data?.propertyId !== undefined) {
-        currentVars = { ...currentVars, [data.propertyId]: data.value };
-        applyCssVarsFrom(currentVars);
-        onUpdate(currentVars);
-         // Persist to local vars.json asynchronously
-         persistVarsJsonDebounced(currentVars);
-      }
-    })
-    // On graph reload, refetch the full vars snapshot
-    .on("broadcast", { event: "graph_reload" }, async () => {
-      console.log("broadcast 'graph_reload' received, refetching vars");
-      const next = await fetchInitialVars();
-      currentVars = { ...next };
-      console.log("currentVars broadcast", JSON.stringify(currentVars));
-      applyCssVarsFrom(currentVars);
-      onUpdate(currentVars);
-    })
-    .subscribe();
-
-  // Subscribe to sandbox room first
-  subscribeRoom(`graph-broadcast-${userRoomId}`);
-  // If different, also subscribe to user room (client broadcasts may use user room)
-  if (userRoomId && userRoomId !== userRoomId) {
-    subscribeRoom(`graph-broadcast-${userRoomId}`);
-  }
-
-  // Also optionally listen for Postgres changes to graph_properties if configured
-  // Not strictly required if backend broadcasts updates.
 }
 
 export function getInitialVars(): Vars {
@@ -200,7 +120,6 @@ export function getInitialVars(): Vars {
 // Receive runtime CSS var updates from parent (e.g., Next app) via postMessage
 export function enableParentVarBridge() {
   if (typeof window === 'undefined') return;
-  const childOrigin = window.location.origin;
   const handler = (ev: MessageEvent) => {
     const data: any = ev?.data || {};
     if (!data || (data.type !== 'manta:vars' && data.type !== 'manta:vars:update')) return;
