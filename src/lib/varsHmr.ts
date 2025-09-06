@@ -1,6 +1,10 @@
 export type Vars = Record<string, any>;
 
 let currentVars: Vars = {};
+let parentBridgeEnabled = false;
+let pollTimer: number | null = null;
+let lastSerializedVars = JSON.stringify(currentVars);
+const listeners = new Set<(vars: Vars) => void>();
 
 function ensureGoogleFontLoaded(family: string | undefined) {
   if (!family) return;
@@ -105,12 +109,48 @@ async function persistVarsJsonDebounced(nextVars: Vars, delay = 200) {
 }
 
 export function subscribeVars(onUpdate: (vars: Vars) => void) {
-  // Emit initial vars (async fetch), then listen to broadcasts for updates
+  listeners.add(onUpdate);
+  // Emit initial vars (async fetch) only when no parent bridge yet.
   fetchInitialVars().then((vars) => {
+    if (parentBridgeEnabled) return; // Parent will drive initial state
     currentVars = vars || {};
+    lastSerializedVars = JSON.stringify(currentVars);
     applyCssVarsFrom(currentVars);
-    onUpdate(currentVars);
+    // Notify all listeners
+    for (const l of Array.from(listeners)) {
+      try { l(currentVars); } catch {}
+    }
   });
+
+  // Fallback: lightweight polling of vars.json in dev to reflect changes
+  // even if the message bridge isn't active.
+  // @ts-ignore
+  const isDev = typeof import.meta !== 'undefined' && (import.meta as any).env && (import.meta as any).env.DEV;
+  if (isDev) {
+    const tick = async () => {
+      if (parentBridgeEnabled) return; // Stop polling once parent bridge is active
+      try {
+        const res = await fetch('/_graph/vars.json', { cache: 'no-store' });
+        if (res.ok) {
+          const next = await res.json();
+          const ser = JSON.stringify(next || {});
+          if (ser !== lastSerializedVars) {
+            lastSerializedVars = ser;
+            currentVars = next || {};
+            applyCssVarsFrom(currentVars);
+            for (const l of Array.from(listeners)) {
+              try { l(currentVars); } catch {}
+            }
+          }
+        }
+      } catch {}
+      // schedule next only if not bridged
+      if (!parentBridgeEnabled) {
+        pollTimer = (setTimeout(tick, 300) as unknown) as number;
+      }
+    };
+    pollTimer = (setTimeout(tick, 300) as unknown) as number;
+  }
 }
 
 export function getInitialVars(): Vars {
@@ -120,17 +160,31 @@ export function getInitialVars(): Vars {
 // Receive runtime CSS var updates from parent (e.g., Next app) via postMessage
 export function enableParentVarBridge() {
   if (typeof window === 'undefined') return;
+  parentBridgeEnabled = true;
+  if (pollTimer) {
+    clearTimeout(pollTimer as any);
+    pollTimer = null;
+  }
   const handler = (ev: MessageEvent) => {
     const data: any = ev?.data || {};
     if (!data || (data.type !== 'manta:vars' && data.type !== 'manta:vars:update')) return;
     try { console.debug('[varsHmr] received vars update from parent:', data); } catch {}
     const updates = data.updates || {};
     if (updates && typeof updates === 'object') {
-      currentVars = { ...currentVars, ...updates };
+      // Merge then dedupe by comparing serialized payloads
+      const nextVars = { ...currentVars, ...updates };
+      const ser = JSON.stringify(nextVars);
+      if (ser === lastSerializedVars) return; // ignore no-op updates
+      currentVars = nextVars;
+      lastSerializedVars = ser;
       applyCssVarsFrom(currentVars);
       try { console.debug('[varsHmr] applied vars, keys:', Object.keys(updates)); } catch {}
       // Persist to vars.json in background (debounced)
       persistVarsJsonDebounced(currentVars);
+      // Notify subscribers so React state updates immediately
+      for (const l of Array.from(listeners)) {
+        try { l(currentVars); } catch {}
+      }
     }
   };
   window.addEventListener('message', handler);
