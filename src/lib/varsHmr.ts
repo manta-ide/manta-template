@@ -194,3 +194,21 @@ export function subscribeVars(onUpdate: (vars: Vars) => void) {
 export function getInitialVars(): Vars {
   return currentVars;
 }
+
+// Receive runtime CSS var updates from parent (e.g., Next app) via postMessage
+export function enableParentVarBridge() {
+  if (typeof window === 'undefined') return;
+  const childOrigin = window.location.origin;
+  const handler = (ev: MessageEvent) => {
+    const data: any = ev?.data || {};
+    if (!data || (data.type !== 'manta:vars' && data.type !== 'manta:vars:update')) return;
+    const updates = data.updates || {};
+    if (updates && typeof updates === 'object') {
+      currentVars = { ...currentVars, ...updates };
+      applyCssVarsFrom(currentVars);
+      // Persist to vars.json in background (debounced)
+      persistVarsJsonDebounced(currentVars);
+    }
+  };
+  window.addEventListener('message', handler);
+}
