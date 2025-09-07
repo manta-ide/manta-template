@@ -1057,119 +1057,6 @@
           "value": true
         }
       ]
-    },
-    {
-      "id": "reviews-section",
-      "title": "Reviews Section",
-      "prompt": "Section showcasing user feedback/testimonials with optional avatars and ratings. Layout supports grid or carousel. Accessible headings and lists required. Flatten all properties here.",
-      "children": [],
-      "parentId": "portfolio-page",
-      "state": "unbuilt",
-      "properties": [
-        {
-          "id": "reviews-section-section-title",
-          "title": "Section Title",
-          "type": "text",
-          "value": "Testimonials",
-          "maxLength": 80
-        },
-        {
-          "id": "section-description",
-          "title": "Section Description",
-          "type": "text",
-          "value": "What others say about my work.",
-          "maxLength": 160
-        },
-        {
-          "id": "reviews",
-          "title": "Reviews",
-          "type": "object-list",
-          "value": [
-            {
-              "name": "Jane Doe",
-              "feedback": "Alex’s attention to detail and reliability is unmatched.",
-              "avatar-src": "https://placehold.co/128x128",
-              "rating": 5
-            },
-            {
-              "name": "John Smith",
-              "feedback": "Delivered the project with quality and ahead of schedule.",
-              "avatar-src": "https://placehold.co/128x128",
-              "rating": 5
-            }
-          ],
-          "itemFields": [
-            {
-              "id": "name",
-              "title": "Reviewer Name",
-              "type": "text",
-              "maxLength": 80
-            },
-            {
-              "id": "feedback",
-              "title": "Feedback",
-              "type": "text",
-              "maxLength": 300
-            },
-            {
-              "id": "avatar-src",
-              "title": "Avatar Src",
-              "type": "text",
-              "maxLength": 240
-            },
-            {
-              "id": "rating",
-              "title": "Rating",
-              "type": "select",
-              "options": [
-                "1",
-                "2",
-                "3",
-                "4",
-                "5"
-              ]
-            }
-          ],
-          "itemTitle": "Review",
-          "addLabel": "+ Add Review"
-        },
-        {
-          "id": "reviews-section-grid-gap",
-          "title": "Grid Gap",
-          "type": "select",
-          "value": "16px",
-          "options": [
-            "0px",
-            "4px",
-            "8px",
-            "12px",
-            "16px",
-            "20px",
-            "24px",
-            "32px"
-          ]
-        },
-        {
-          "id": "reviews-section-card-radius",
-          "title": "Card Border Radius",
-          "type": "select",
-          "value": "16px",
-          "options": [
-            "0px",
-            "4px",
-            "8px",
-            "12px",
-            "16px",
-            "20px",
-            "24px",
-            "32px"
-          ]
-        }
-      ],
-      "position": {
-        "x": 1360,
-        "y": 320
-      }
     }
   ],
   "edges": [
@@ -1197,11 +1084,6 @@
       "id": "portfolio-page-contact-footer",
       "source": "portfolio-page",
       "target": "contact-footer"
-    },
-    {
-      "id": "portfolio-page-reviews-section",
-      "source": "portfolio-page",
-      "target": "reviews-section"
     }
   ]
 }

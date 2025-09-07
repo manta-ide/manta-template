@@ -117,21 +117,5 @@
   "footer-padding-y": "24px",
   "is-accent-submit": true,
   "reviews-section-section-title": "Testimonials",
-  "section-description": "What others say about my work.",
-  "reviews": [
-    {
-      "name": "Jane Doe",
-      "feedback": "Alex’s attention to detail and reliability is unmatched.",
-      "avatar-src": "https://placehold.co/128x128",
-      "rating": 5
-    },
-    {
-      "name": "John Smith",
-      "feedback": "Delivered the project with quality and ahead of schedule.",
-      "avatar-src": "https://placehold.co/128x128",
-      "rating": 5
-    }
-  ],
-  "reviews-section-grid-gap": "16px",
-  "reviews-section-card-radius": "16px"
+  "section-description": "What others say about my work."
 }
