@@ -115,7 +115,5 @@
   "input-radius": "12px",
   "button-radius": "12px",
   "footer-padding-y": "24px",
-  "is-accent-submit": true,
-  "reviews-section-section-title": "Testimonials",
-  "section-description": "What others say about my work."
+  "is-accent-submit": true
 }
