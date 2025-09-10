@@ -126,7 +126,7 @@ export default defineConfig(({ mode }) => {
     server: {
       watch: {
         usePolling: true,
-        ignored: ['**/iframe/_graph/vars.json'],
+        ignored: ['**/_graph/vars.json'],
       },
       host: true,
       port: 5173,

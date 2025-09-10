@@ -96,7 +96,7 @@ async function persistVarsJsonDebounced(nextVars: Vars, delay = 200) {
   if (persistTimer) clearTimeout(persistTimer);
   persistTimer = setTimeout(async () => {
     try {
-      await fetch(`/iframe/__graph/vars`, {
+      await fetch(`/__graph/vars`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(nextVars),
@@ -133,7 +133,7 @@ export function subscribeVars(onUpdate: (vars: Vars) => void) {
     const tick = async () => {
       if (parentBridgeEnabled) return; // Stop polling once parent bridge is active
       try {
-        const res = await fetch('/iframe/_graph/vars.json', { cache: 'no-store' });
+        const res = await fetch('_graph/vars.json', { cache: 'no-store' });
         if (res.ok) {
           const next = await res.json();
           const ser = JSON.stringify(next || {});
