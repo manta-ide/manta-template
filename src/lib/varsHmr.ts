@@ -78,14 +78,14 @@ function applyCssVarsFrom(vars: Vars) {
 async function fetchInitialVars(): Promise<Vars> {
   // Prefer local graph vars for initial load
   try {
-    const res = await fetch(`/_graph/vars.json`, { cache: 'no-store' });
+    const res = await fetch(`/iframe/_graph/vars.json`, { cache: 'no-store' });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const json = await res.json();
     if (json && typeof json === 'object') {
       return json as Vars;
     }
   } catch (e) {
-    console.warn('Failed to load /_graph/vars.json, falling back to empty vars:', e);
+    console.warn('Failed to load /iframe/_graph/vars.json, falling back to empty vars:', e);
   }
   return {};
 }
@@ -96,14 +96,14 @@ async function persistVarsJsonDebounced(nextVars: Vars, delay = 200) {
   if (persistTimer) clearTimeout(persistTimer);
   persistTimer = setTimeout(async () => {
     try {
-      await fetch(`/__graph/vars`, {
+      await fetch(`/iframe/__graph/vars`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(nextVars),
         cache: 'no-store',
       });
     } catch (e) {
-      console.warn('Failed to persist vars.json:', e);
+      console.warn('Failed to persist iframe/vars.json:', e);
     }
   }, delay);
 }
@@ -133,7 +133,7 @@ export function subscribeVars(onUpdate: (vars: Vars) => void) {
     const tick = async () => {
       if (parentBridgeEnabled) return; // Stop polling once parent bridge is active
       try {
-        const res = await fetch('/_graph/vars.json', { cache: 'no-store' });
+        const res = await fetch('/iframe/_graph/vars.json', { cache: 'no-store' });
         if (res.ok) {
           const next = await res.json();
           const ser = JSON.stringify(next || {});

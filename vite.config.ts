@@ -31,10 +31,10 @@ function frameHeaders(): Plugin {
 function graphVarsMiddleware(): Plugin {
   // Important: keep this rooted at '/'.
   // If your Next proxy forwards `/iframe/*` → `/`, then `/iframe/__graph/vars` will reach this as `/__graph/vars`.
-  const route = '/__graph/vars';
+  const route = '/iframe/__graph/vars';
   const makeHandler = (rootDir: string) => {
-    const varsPath = pathResolve(rootDir, './_graph/vars.json');
-    const varsDir = pathResolve(rootDir, './_graph');
+    const varsPath = pathResolve(rootDir, './iframe/_graph/vars.json');
+    const varsDir = pathResolve(rootDir, './iframe/_graph');
     return async (req: any, res: any) => {
       if (!req.url?.startsWith(route)) return false;
       const method = (req.method || 'GET').toUpperCase();
@@ -126,7 +126,7 @@ export default defineConfig(({ mode }) => {
     server: {
       watch: {
         usePolling: true,
-        ignored: ['**/_graph/vars.json'],
+        ignored: ['**/iframe/_graph/vars.json'],
       },
       host: true,
       port: 5173,
