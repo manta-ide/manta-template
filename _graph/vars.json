@@ -1,6 +1,7 @@
 {
+  "is-dark-theme": true,
   "root-styles": {
-    "background-color": "#000000",
+    "background-color": "#ab4a4a",
     "text-color": "#dd4290",
     "accent-color": "#7c34cd",
     "muted-color": "#b2adac",
@@ -11,10 +12,6 @@
     "section-padding-y": "48px",
     "section-padding-x": "20px",
     "border-radius-global": "16px"
-  },
-  "is-dark-theme": true,
-  "root-font": {
-    "family": "Poppins"
   },
   "social-links": [
     {
@@ -41,7 +38,7 @@
   "brand-font-size": "1.5rem",
   "link-gap": "16px",
   "resume-border-radius": "12px",
-  "is-dark-variant": true,
+  "is-dark-variant": "",
   "hover-underline": true,
   "headline": "Building reliable, delightful software.",
   "subheadline": "Full-stack engineer specializing in TypeScript, Next.js, and cloud-native systems.",
@@ -63,7 +60,7 @@
   "section-title": "Featured Projects",
   "section-subtitle": "A selection of work spanning web apps, APIs, and infrastructure.",
   "search-placeholder": "Search projects...",
-  "tags": "Next.js, TypeScript, Node.js, React, Tailwind, AWS, Docker, PostgreSQL",
+  "tags": "Next.js, TypeScript, React, Tailwind, AWS, Docker, PostgreSQL",
   "projects": [
     {
       "title": "Realtime Dashboard",
@@ -110,10 +107,44 @@
   "contact-email": "hello@example.com",
   "contact-twitter": "https://twitter.com/yourhandle",
   "contact-linkedin": "https://www.linkedin.com/in/yourhandle/",
-  "footer-text": "© 2025 Alex. All rights reserved.",
+  "footer-text": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ© 2025 Alex. All rights reserved.",
   "form-gap": "16px",
   "input-radius": "12px",
   "button-radius": "12px",
   "footer-padding-y": "24px",
-  "is-accent-submit": true
+  "is-accent-submit": true,
+  "reviews-section-title": "Testimonials",
+  "reviews-section-subtitle": "What clients and collaborators say",
+  "reviews-items": [
+    {
+      "name": "Priya Desai",
+      "role": "Engineering Manager",
+      "company": "Acme Corp",
+      "quote": "Alex consistently delivers high-quality code and communicates trade-offs clearly.",
+      "avatar-src": "https://placehold.co/96x96/white/black?text=P"
+    },
+    {
+      "name": "Marco Silva",
+      "role": "Tech Lead",
+      "company": "Nimbus",
+      "quote": "A reliable collaborator who accelerates teams with great DX and automation.",
+      "avatar-src": "https://placehold.co/96x96/white/black?text=M"
+    },
+    {
+      "name": "Sara Kimu",
+      "role": "Product Manager",
+      "company": "Northwin",
+      "quote": "Thoughtful, pragmatic, and customer-oriented ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ a joy to work with.",
+      "avatar-src": "https://placehold.co/96x96/white/black?text=S"
+    }
+  ],
+  "reviews-grid-gap": "24px",
+  "reviews-columns": "3",
+  "reviews-card-radius": "16px",
+  "reviews-card-padding": "16px",
+  "reviews-quote-size": "1rem",
+  "reviews-author-size": "1rem",
+  "reviews-avatar-radius": "12px",
+  "reviews-show-stars": true,
+  "reviews-star-size": "16px"
 }

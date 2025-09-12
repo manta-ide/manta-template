@@ -81,6 +81,27 @@ export default function App({ vars }: AppProps) {
     .map((s: string) => s.trim())
     .filter(Boolean);
 
+  // Reviews data (Testimonials)
+  const reviewsItems: Array<{
+    name: string;
+    role: string;
+    company: string;
+    quote: string;
+    avatar: string;
+  }> = Array.isArray(vars["reviews-items"]) && (vars["reviews-items"] as any[]).length
+    ? (vars["reviews-items"] as any[]).map((r) => ({
+        name: r?.name || "Anonymous",
+        role: r?.role || "",
+        company: r?.company || "",
+        quote: r?.quote || "",
+        avatar: r?.["avatar-src"] || "https://placehold.co/96x96/white/black?text=?",
+      }))
+    : [];
+
+  const reviewsColsVal = String(vars["reviews-columns"] ?? "3");
+  const reviewsColsClass =
+    reviewsColsVal === "1" ? "md:grid-cols-1" : reviewsColsVal === "2" ? "md:grid-cols-2" : "md:grid-cols-3";
+
   return (
     <main
       id="portfolio-page"
@@ -243,6 +264,95 @@ export default function App({ vars }: AppProps) {
                 </div>
               </article>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Reviews Section */}
+      <section
+        id="reviews"
+        aria-labelledby="reviews-title"
+        className="w-full"
+        style={{
+          padding: `${vars["section-padding-y"] || "48px"} var(--section-padding-x)`,
+          // Section-scoped CSS vars
+          ["--reviews-grid-gap" as any]: (vars["reviews-grid-gap"] as string) || "24px",
+          ["--reviews-card-radius" as any]: (vars["reviews-card-radius"] as string) || "16px",
+          ["--reviews-card-padding" as any]: (vars["reviews-card-padding"] as string) || "16px",
+          ["--reviews-quote-size" as any]: (vars["reviews-quote-size"] as string) || "1rem",
+          ["--reviews-author-size" as any]: (vars["reviews-author-size"] as string) || "1rem",
+          ["--reviews-avatar-radius" as any]: (vars["reviews-avatar-radius"] as string) || "12px",
+          ["--reviews-star-size" as any]: (vars["reviews-star-size"] as string) || "16px",
+        } as React.CSSProperties}
+      >
+        <div className="mx-auto max-w-[var(--max-content-width)]">
+          <div className="mb-6">
+            <h2 id="reviews-title" className="text-2xl font-semibold">
+              {vars["reviews-section-title"] || "Testimonials"}
+            </h2>
+            <p className="text-sm text-[var(--muted-color)]">
+              {vars["reviews-section-subtitle"] || "What clients and collaborators say"}
+            </p>
+          </div>
+
+          <div className={`grid gap-[var(--reviews-grid-gap)] ${reviewsColsClass}`}>
+            {reviewsItems.map((r) => (
+              <article
+                key={`${r.name}-${r.company}`}
+                className="bg-[rgba(255,255,255,0.02)] border border-[var(--border-color)] rounded-[var(--reviews-card-radius)] p-[var(--reviews-card-padding)]"
+                aria-label={`Testimonial from ${r.name}`}
+              >
+                <figure>
+                  <blockquote className="text-[var(--text-color)]" style={{ fontSize: "var(--reviews-quote-size)" }}>
+                    “{r.quote}”
+                  </blockquote>
+
+                  {vars["reviews-show-stars"] ? (
+                    <div className="mt-3 flex" aria-hidden="true">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <svg
+                          key={i}
+                          width="var(--reviews-star-size)"
+                          height="var(--reviews-star-size)"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                          className="text-[var(--accent-color)] mr-1"
+                        >
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.801 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.538 1.118l-2.801-2.034a1 1 0 00-1.176 0l-2.801 2.034c-.783.57-1.838-.197-1.538-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.88 8.72c-.783-.57-.38-1.81.588-1.81h3.462a1 1 0 00.95-.69l1.07-3.292z" />
+                        </svg>
+                      ))}
+                    </div>
+                  ) : null}
+
+                  <figcaption className="mt-4 flex items-center gap-3">
+                    <div
+                      className="overflow-hidden flex-shrink-0"
+                      style={{ borderRadius: "var(--reviews-avatar-radius)" }}
+                    >
+                      <img
+                        src={r.avatar}
+                        alt="Reviewer avatar"
+                        className="w-12 h-12 object-cover"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </div>
+                    <div className="leading-tight">
+                      <div className="font-semibold" style={{ fontSize: "var(--reviews-author-size)" }}>
+                        {r.name}
+                      </div>
+                      <div className="text-xs text-[var(--muted-color)]">
+                        {[r.role, r.company].filter(Boolean).join(" · ")}
+                      </div>
+                    </div>
+                  </figcaption>
+                </figure>
+              </article>
+            ))}
+
+            {reviewsItems.length === 0 && (
+              <div className="text-sm text-[var(--muted-color)]">No reviews available.</div>
+            )}
           </div>
         </div>
       </section>

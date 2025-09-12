@@ -6,6 +6,7 @@ let pollTimer: number | null = null;
 let lastSerializedVars = JSON.stringify(currentVars);
 const listeners = new Set<(vars: Vars) => void>();
 
+
 function ensureGoogleFontLoaded(family: string | undefined) {
   if (!family) return;
   // Skip if a stack is provided (contains comma) — assume already available
@@ -76,37 +77,174 @@ function applyCssVarsFrom(vars: Vars) {
 }
 
 async function fetchInitialVars(): Promise<Vars> {
-  // Prefer local graph vars for initial load
+  console.log('[varsHmr] Fetching initial vars from API...');
   try {
-    const res = await fetch(`/iframe/_graph/vars.json`, { cache: 'no-store' });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const json = await res.json();
-    if (json && typeof json === 'object') {
-      return json as Vars;
+    // Try the new API endpoint first
+    const apiRes = await fetch('/api/vars', { cache: 'no-store' });
+    console.log('[varsHmr] API fetch response:', apiRes.status);
+
+    if (apiRes.ok) {
+      const vars = await apiRes.json();
+      console.log('[varsHmr] Initial vars loaded from API:', Object.keys(vars));
+      return vars;
+    } else {
+      console.warn('[varsHmr] API fetch failed, falling back to direct XML parsing');
     }
   } catch (e) {
-    console.warn('Failed to load /iframe/_graph/vars.json, falling back to empty vars:', e);
+    console.warn('[varsHmr] API fetch failed, falling back to direct XML parsing:', e);
+  }
+
+  // Fallback to direct XML parsing if API fails
+  try {
+    const res = await fetch(`http://localhost:3001/iframe/_graph/graph.xml`, { cache: 'no-store' });
+    console.log('[varsHmr] Fallback fetch response:', res.status);
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const xmlText = await res.text();
+    console.log('[varsHmr] Fallback XML fetched, length:', xmlText.length);
+
+    // Simple XML parsing to extract variables
+    const vars = extractVarsFromXml(xmlText);
+    console.log('[varsHmr] Initial vars extracted from XML:', Object.keys(vars));
+
+    if (vars && typeof vars === 'object') {
+      return vars;
+    }
+  } catch (e) {
+    console.warn('[varsHmr] Failed to load _graph/graph.xml, falling back to empty vars:', e);
   }
   return {};
 }
 
-// Debounced persist of vars.json via vite dev-server middleware
-let persistTimer: any = null;
-async function persistVarsJsonDebounced(nextVars: Vars, delay = 200) {
-  if (persistTimer) clearTimeout(persistTimer);
-  persistTimer = setTimeout(async () => {
-    try {
-      await fetch(`/__graph/vars`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(nextVars),
-        cache: 'no-store',
-      });
-    } catch (e) {
-      console.warn('Failed to persist iframe/vars.json:', e);
+// Simple XML parsing to extract variables from graph.xml
+function extractVarsFromXml(xmlText: string): Vars {
+  const vars: Vars = {};
+
+  try {
+    // Parse XML using DOMParser
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+
+    // Check for parser errors
+    const parserError = xmlDoc.querySelector('parsererror');
+    if (parserError) {
+      throw new Error('XML parsing error: ' + parserError.textContent);
     }
-  }, delay);
+
+    // Extract all properties from all nodes
+    const props = xmlDoc.querySelectorAll('prop');
+
+    props.forEach(prop => {
+      const propName = prop.getAttribute('name');
+      const propType = prop.getAttribute('type');
+
+      if (!propName) return;
+
+      const key = propName.toLowerCase().replace(/\s+/g, '-');
+      const value = parsePropValue(prop, propType);
+
+      if (value !== undefined) {
+        vars[key] = value;
+      }
+    });
+
+  } catch (e) {
+    console.warn('Failed to parse XML for variables:', e);
+  }
+
+  return vars;
 }
+
+function parsePropValue(prop: Element, type: string | null): any {
+  // Handle simple properties with direct text content
+  const textContent = prop.textContent?.trim();
+  if (textContent && !prop.querySelector('field, value, item')) {
+    return parseValue(textContent, type);
+  }
+
+  // Handle object properties with fields
+  if (type === 'object') {
+    const obj: any = {};
+    const fields = prop.querySelectorAll('field');
+    fields.forEach(field => {
+      const fieldName = field.getAttribute('name');
+      const fieldType = field.getAttribute('type');
+      const fieldValue = parseFieldValue(field, fieldType);
+      if (fieldName && fieldValue !== undefined) {
+        obj[fieldName] = fieldValue;
+      }
+    });
+    return obj;
+  }
+
+  // Handle object-list properties
+  if (type === 'object-list') {
+    const items = prop.querySelectorAll('item');
+    return Array.from(items).map(item => {
+      const itemObj: any = {};
+      const fields = item.querySelectorAll('field');
+      fields.forEach(field => {
+        const fieldName = field.getAttribute('name');
+        const fieldType = field.getAttribute('type');
+        const fieldValue = parseFieldValue(field, fieldType);
+        if (fieldName && fieldValue !== undefined) {
+          itemObj[fieldName] = fieldValue;
+        }
+      });
+      return itemObj;
+    });
+  }
+
+  // Handle select fields within object properties
+  const valueElement = prop.querySelector('value');
+  if (valueElement) {
+    return parseValue(valueElement.textContent?.trim() || '', type);
+  }
+
+  return undefined;
+}
+
+function parseFieldValue(field: Element, type: string | null): any {
+  // Handle select fields
+  if (type === 'select') {
+    const valueElement = field.querySelector('value');
+    if (valueElement) {
+      return parseValue(valueElement.textContent?.trim() || '', type);
+    }
+  }
+
+  // Handle simple field values
+  const textContent = field.textContent?.trim();
+  if (textContent) {
+    return parseValue(textContent, type);
+  }
+
+  return undefined;
+}
+
+function parseValue(value: string, type: string | null): any {
+  if (!value) return value;
+
+  // Handle boolean values
+  if (type === 'boolean') {
+    return value.toLowerCase() === 'true';
+  }
+
+  // Handle number values
+  if (type === 'number') {
+    const num = parseFloat(value);
+    return isNaN(num) ? value : num;
+  }
+
+  // Try to parse as JSON for complex values
+  try {
+    return JSON.parse(value);
+  } catch {
+    // Return as string if not JSON
+    return value;
+  }
+}
+
 
 export function subscribeVars(onUpdate: (vars: Vars) => void) {
   listeners.add(onUpdate);
@@ -125,39 +263,112 @@ export function subscribeVars(onUpdate: (vars: Vars) => void) {
     }
   });
 
-  // Fallback: lightweight polling of vars.json in dev to reflect changes
+  // Fallback: lightweight polling of graph.xml in dev to reflect changes
   // even if the message bridge isn't active.
   // @ts-ignore
   const isDev = typeof import.meta !== 'undefined' && (import.meta as any).env && (import.meta as any).env.DEV;
   if (isDev) {
+    console.log('[varsHmr] Starting polling mechanism for graph.xml updates');
     const tick = async () => {
-      if (parentBridgeEnabled) return; // Stop polling once parent bridge is active
+      if (parentBridgeEnabled) {
+        console.log('[varsHmr] Stopping polling - parent bridge is active');
+        return; // Stop polling once parent bridge is active
+      }
+
       try {
-        const res = await fetch('_graph/vars.json', { cache: 'no-store' });
-        if (res.ok) {
-          const next = await res.json();
-          const ser = JSON.stringify(next || {});
-          if (ser !== lastSerializedVars) {
-            lastSerializedVars = ser;
-            currentVars = next || {};
-            applyCssVarsFrom(currentVars);
-            for (const l of Array.from(listeners)) {
-              try { l(currentVars); } catch {}
-            }
+        console.log('[varsHmr] Polling for variable updates...');
+
+        // Try API endpoint first
+        let next: Vars = {};
+        let fetchedFromApi = false;
+
+        try {
+          const apiRes = await fetch('/api/vars', { cache: 'no-store' });
+          if (apiRes.ok) {
+            next = await apiRes.json();
+            fetchedFromApi = true;
+            console.log('[varsHmr] Fetched vars from API');
+          }
+        } catch (apiError) {
+          console.warn('[varsHmr] API fetch failed, trying fallback XML:', apiError);
+        }
+
+        // Fallback to direct XML if API fails
+        if (!fetchedFromApi) {
+          const res = await fetch('http://localhost:3001/iframe/_graph/graph.xml', { cache: 'no-store' });
+          if (res.ok) {
+            const xmlText = await res.text();
+            console.log('[varsHmr] Fallback XML fetched, length:', xmlText.length);
+            next = extractVarsFromXml(xmlText);
+          } else {
+            console.warn('[varsHmr] Failed to fetch graph.xml:', res.status);
+            return; // Skip this polling cycle
           }
         }
-      } catch {}
+
+        const ser = JSON.stringify(next || {});
+
+        if (ser !== lastSerializedVars) {
+          console.log('[varsHmr] Variables changed, updating...');
+          lastSerializedVars = ser;
+          currentVars = next || {};
+          applyCssVarsFrom(currentVars);
+
+          console.log('[varsHmr] Notifying subscribers from polling');
+          for (const l of Array.from(listeners)) {
+            try { l(currentVars); } catch {}
+          }
+        } else {
+          console.log('[varsHmr] No changes in variables');
+        }
+      } catch (error) {
+        console.warn('[varsHmr] Error polling for updates:', error);
+      }
+
       // schedule next only if not bridged
       if (!parentBridgeEnabled) {
-        pollTimer = (setTimeout(tick, 300) as unknown) as number;
+        pollTimer = (setTimeout(tick, 1000) as unknown) as number; // Increased to 1s to reduce noise
       }
     };
-    pollTimer = (setTimeout(tick, 300) as unknown) as number;
+    pollTimer = (setTimeout(tick, 1000) as unknown) as number;
   }
 }
 
 export function getInitialVars(): Vars {
   return currentVars;
+}
+
+// Function to publish variable updates from child to parent/server
+export async function publishVarsUpdate(updates: Vars): Promise<void> {
+  try {
+    const res = await fetch('/api/vars', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updates),
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}`);
+    }
+
+    console.log('[varsHmr] Successfully published variable updates to server');
+  } catch (error) {
+    console.warn('[varsHmr] Failed to publish variable updates:', error);
+    // Fallback to parent bridge if available
+    if (typeof window !== 'undefined' && window.parent !== window) {
+      try {
+        window.parent.postMessage({
+          type: 'manta:vars:update',
+          updates: updates
+        }, '*');
+        console.log('[varsHmr] Published updates via parent bridge fallback');
+      } catch (bridgeError) {
+        console.error('[varsHmr] Parent bridge fallback also failed:', bridgeError);
+      }
+    }
+  }
 }
 
 // Receive runtime CSS var updates from parent (e.g., Next app) via postMessage
@@ -170,24 +381,54 @@ export function enableParentVarBridge() {
   }
   const handler = (ev: MessageEvent) => {
     const data: any = ev?.data || {};
-    if (!data || (data.type !== 'manta:vars' && data.type !== 'manta:vars:update')) return;
-    try { console.debug('[varsHmr] received vars update from parent:', data); } catch {}
+    console.log('[varsHmr] Received message:', data.type, data);
+
+    if (!data || (data.type !== 'manta:vars' && data.type !== 'manta:vars:update')) {
+      console.log('[varsHmr] Ignoring message - wrong type:', data.type);
+      return;
+    }
+
+    console.log('[varsHmr] Processing vars update from parent:', data);
     const updates = data.updates || {};
+
     if (updates && typeof updates === 'object') {
+      console.log('[varsHmr] Merging updates:', Object.keys(updates));
+
       // Merge then dedupe by comparing serialized payloads
       const nextVars = { ...currentVars, ...updates };
       const ser = JSON.stringify(nextVars);
-      if (ser === lastSerializedVars) return; // ignore no-op updates
+
+      if (ser === lastSerializedVars) {
+        console.log('[varsHmr] No changes detected, skipping update');
+        return; // ignore no-op updates
+      }
+
       currentVars = nextVars;
       lastSerializedVars = ser;
+
+      console.log('[varsHmr] Applying CSS variables and notifying subscribers');
       applyCssVarsFrom(currentVars);
-      try { console.debug('[varsHmr] applied vars, keys:', Object.keys(updates)); } catch {}
-      // Persist to vars.json in background (debounced)
-      persistVarsJsonDebounced(currentVars);
+
+      // Publish updates back to server if this came from a child app
+      if (data.source === 'child') {
+        publishVarsUpdate(updates).catch(error => {
+          console.warn('[varsHmr] Failed to publish child updates to server:', error);
+        });
+      }
+
       // Notify subscribers so React state updates immediately
       for (const l of Array.from(listeners)) {
-        try { l(currentVars); } catch {}
+        try {
+          console.log('[varsHmr] Notifying subscriber');
+          l(currentVars);
+        } catch (error) {
+          console.error('[varsHmr] Error notifying subscriber:', error);
+        }
       }
+
+      console.log('[varsHmr] Update complete');
+    } else {
+      console.warn('[varsHmr] Invalid updates format:', updates);
     }
   };
   window.addEventListener('message', handler);
