@@ -77,174 +77,40 @@ function applyCssVarsFrom(vars: Vars) {
 }
 
 async function fetchInitialVars(): Promise<Vars> {
-  console.log('[varsHmr] Fetching initial vars from API...');
+  console.log('[varsHmr] Fetching initial vars from vars.json...');
   try {
-    // Try the new API endpoint first
-    const apiRes = await fetch('/api/vars', { cache: 'no-store' });
-    console.log('[varsHmr] API fetch response:', apiRes.status);
+    const res = await fetch('/iframe/_graph/vars.json', { cache: 'no-store' });
+    console.log('[varsHmr] vars.json fetch response:', res.status);
 
-    if (apiRes.ok) {
-      const vars = await apiRes.json();
-      console.log('[varsHmr] Initial vars loaded from API:', Object.keys(vars));
+    if (res.ok) {
+      const vars = await res.json();
+      console.log('[varsHmr] Initial vars loaded from vars.json:', Object.keys(vars));
       return vars;
     } else {
-      console.warn('[varsHmr] API fetch failed, falling back to direct XML parsing');
+      console.warn('[varsHmr] Failed to load vars.json:', res.status);
     }
   } catch (e) {
-    console.warn('[varsHmr] API fetch failed, falling back to direct XML parsing:', e);
-  }
-
-  // Fallback to direct XML parsing if API fails
-  try {
-    const res = await fetch(`http://localhost:3001/iframe/_graph/graph.xml`, { cache: 'no-store' });
-    console.log('[varsHmr] Fallback fetch response:', res.status);
-
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const xmlText = await res.text();
-    console.log('[varsHmr] Fallback XML fetched, length:', xmlText.length);
-
-    // Simple XML parsing to extract variables
-    const vars = extractVarsFromXml(xmlText);
-    console.log('[varsHmr] Initial vars extracted from XML:', Object.keys(vars));
-
-    if (vars && typeof vars === 'object') {
-      return vars;
-    }
-  } catch (e) {
-    console.warn('[varsHmr] Failed to load _graph/graph.xml, falling back to empty vars:', e);
+    console.warn('[varsHmr] Failed to fetch vars.json:', e);
   }
   return {};
 }
 
-// Simple XML parsing to extract variables from graph.xml
-function extractVarsFromXml(xmlText: string): Vars {
-  const vars: Vars = {};
+// Deep merge objects for nested structures
+function deepMerge(target: Record<string, any>, source: Record<string, any>): Record<string, any> {
+  const result = { ...target };
 
-  try {
-    // Parse XML using DOMParser
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
-
-    // Check for parser errors
-    const parserError = xmlDoc.querySelector('parsererror');
-    if (parserError) {
-      throw new Error('XML parsing error: ' + parserError.textContent);
-    }
-
-    // Extract all properties from all nodes
-    const props = xmlDoc.querySelectorAll('prop');
-
-    props.forEach(prop => {
-      const propName = prop.getAttribute('name');
-      const propType = prop.getAttribute('type');
-
-      if (!propName) return;
-
-      const key = propName.toLowerCase().replace(/\s+/g, '-');
-      const value = parsePropValue(prop, propType);
-
-      if (value !== undefined) {
-        vars[key] = value;
-      }
-    });
-
-  } catch (e) {
-    console.warn('Failed to parse XML for variables:', e);
-  }
-
-  return vars;
-}
-
-function parsePropValue(prop: Element, type: string | null): any {
-  // Handle simple properties with direct text content
-  const textContent = prop.textContent?.trim();
-  if (textContent && !prop.querySelector('field, value, item')) {
-    return parseValue(textContent, type);
-  }
-
-  // Handle object properties with fields
-  if (type === 'object') {
-    const obj: any = {};
-    const fields = prop.querySelectorAll('field');
-    fields.forEach(field => {
-      const fieldName = field.getAttribute('name');
-      const fieldType = field.getAttribute('type');
-      const fieldValue = parseFieldValue(field, fieldType);
-      if (fieldName && fieldValue !== undefined) {
-        obj[fieldName] = fieldValue;
-      }
-    });
-    return obj;
-  }
-
-  // Handle object-list properties
-  if (type === 'object-list') {
-    const items = prop.querySelectorAll('item');
-    return Array.from(items).map(item => {
-      const itemObj: any = {};
-      const fields = item.querySelectorAll('field');
-      fields.forEach(field => {
-        const fieldName = field.getAttribute('name');
-        const fieldType = field.getAttribute('type');
-        const fieldValue = parseFieldValue(field, fieldType);
-        if (fieldName && fieldValue !== undefined) {
-          itemObj[fieldName] = fieldValue;
-        }
-      });
-      return itemObj;
-    });
-  }
-
-  // Handle select fields within object properties
-  const valueElement = prop.querySelector('value');
-  if (valueElement) {
-    return parseValue(valueElement.textContent?.trim() || '', type);
-  }
-
-  return undefined;
-}
-
-function parseFieldValue(field: Element, type: string | null): any {
-  // Handle select fields
-  if (type === 'select') {
-    const valueElement = field.querySelector('value');
-    if (valueElement) {
-      return parseValue(valueElement.textContent?.trim() || '', type);
+  for (const [key, value] of Object.entries(source)) {
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      // Deep merge nested objects
+      result[key] = deepMerge(result[key] || {}, value);
+    } else {
+      // Replace arrays and primitive values entirely
+      result[key] = value;
     }
   }
 
-  // Handle simple field values
-  const textContent = field.textContent?.trim();
-  if (textContent) {
-    return parseValue(textContent, type);
-  }
-
-  return undefined;
+  return result;
 }
-
-function parseValue(value: string, type: string | null): any {
-  if (!value) return value;
-
-  // Handle boolean values
-  if (type === 'boolean') {
-    return value.toLowerCase() === 'true';
-  }
-
-  // Handle number values
-  if (type === 'number') {
-    const num = parseFloat(value);
-    return isNaN(num) ? value : num;
-  }
-
-  // Try to parse as JSON for complex values
-  try {
-    return JSON.parse(value);
-  } catch {
-    // Return as string if not JSON
-    return value;
-  }
-}
-
 
 export function subscribeVars(onUpdate: (vars: Vars) => void) {
   listeners.add(onUpdate);
@@ -276,35 +142,16 @@ export function subscribeVars(onUpdate: (vars: Vars) => void) {
       }
 
       try {
-        console.log('[varsHmr] Polling for variable updates...');
+        console.log('[varsHmr] Polling for variable updates from vars.json...');
 
-        // Try API endpoint first
-        let next: Vars = {};
-        let fetchedFromApi = false;
-
-        try {
-          const apiRes = await fetch('/api/vars', { cache: 'no-store' });
-          if (apiRes.ok) {
-            next = await apiRes.json();
-            fetchedFromApi = true;
-            console.log('[varsHmr] Fetched vars from API');
-          }
-        } catch (apiError) {
-          console.warn('[varsHmr] API fetch failed, trying fallback XML:', apiError);
+        const res = await fetch('/iframe/_graph/vars.json', { cache: 'no-store' });
+        if (!res.ok) {
+          console.warn('[varsHmr] Failed to fetch vars.json:', res.status);
+          return; // Skip this polling cycle
         }
 
-        // Fallback to direct XML if API fails
-        if (!fetchedFromApi) {
-          const res = await fetch('http://localhost:3001/iframe/_graph/graph.xml', { cache: 'no-store' });
-          if (res.ok) {
-            const xmlText = await res.text();
-            console.log('[varsHmr] Fallback XML fetched, length:', xmlText.length);
-            next = extractVarsFromXml(xmlText);
-          } else {
-            console.warn('[varsHmr] Failed to fetch graph.xml:', res.status);
-            return; // Skip this polling cycle
-          }
-        }
+        const next = await res.json();
+        console.log('[varsHmr] Fetched vars from vars.json');
 
         const ser = JSON.stringify(next || {});
 
@@ -392,9 +239,9 @@ export function enableParentVarBridge() {
     const updates = data.updates || {};
 
     if (updates && typeof updates === 'object') {
-      console.log('[varsHmr] Merging updates:', Object.keys(updates));
+      console.log('[varsHmr] Merging flattened updates:', Object.keys(updates));
 
-      // Merge then dedupe by comparing serialized payloads
+      // Shallow merge the flattened updates (variables are at root level)
       const nextVars = { ...currentVars, ...updates };
       const ser = JSON.stringify(nextVars);
 

@@ -10,7 +10,7 @@
         <prop name="is-dark-theme" title="Is Dark Theme" type="boolean">true</prop>
         <prop name="root-styles" title="Root Styles" type="object">
         <field name="background-color" title="Background Color" type="color">#000000</field>
-        <field name="text-color" title="Text Color" type="color">#dd4290</field>
+        <field name="text-color" title="Text Color" type="color">#e3e3b1</field>
         <field name="accent-color" title="Accent Color" type="color">#7c34cd</field>
         <field name="muted-color" title="Muted Color" type="color">#b2adac</field>
         <field name="border-color" title="Border Color" type="color">#161a1d</field>
@@ -394,7 +394,7 @@
           <field name="live" title="Live URL" type="text">https://example.com/realtime-dashboard</field>
         </item>
         <item index="1">
-          <field name="title" title="Title" type="text">API Platform</field>
+          <field name="title" title="Title" type="text">API Platform 123</field>
           <field name="description" title="Description" type="text">Scalable REST and GraphQL APIs with robust observability.</field>
           <field name="image" title="Image URL" type="text">https://placehold.co/512x400/white/black?text=API+Platform&amp;font=Poppins</field>
           <field name="tech" title="Tech (comma-separated)" type="text">Node.js, TypeScript, PostgreSQL, Docker, AWS</field>
@@ -535,7 +535,7 @@
         <prop name="contact-email" title="Contact Email" type="text">hello@example.com</prop>
         <prop name="contact-twitter" title="Contact Twitter" type="text">https://twitter.com/yourhandle</prop>
         <prop name="contact-linkedin" title="Contact LinkedIn" type="text">https://www.linkedin.com/in/yourhandle/</prop>
-        <prop name="footer-text" title="Footer Text" type="text">ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ© 2025 Alex. All rights reserved.</prop>
+        <prop name="footer-text" title="Footer Text" type="text">2025 Alex. All rights reserved.1111235</prop>
         <prop name="form-gap" title="Form Field Gap" type="select">
           <value>16px</value>
           <options>
@@ -590,141 +590,6 @@
         <prop name="is-accent-submit" title="Is Accent Submit Button" type="boolean">true</prop>
       </props>
     </node>
-
-    <node id="reviews" title="Reviews Section">
-      <description>Testimonials and reviews section featuring quotes from clients or peers, with accessible markup, high-contrast styling, and responsive grid. All element settings are flattened as properties on this node for a Vite + TypeScript + Tailwind project.</description>
-      <state status="active">
-        <build status="built"/>
-      </state>
-      <props>
-        <prop name="reviews-section-title" title="Section Title" type="text">Testimonials</prop>
-        <prop name="reviews-section-subtitle" title="Section Subtitle" type="text">What clients and collaborators say</prop>
-        <prop name="reviews-items" title="Reviews" type="object-list">
-        <item index="0">
-          <field name="name" title="Name" type="text">Priya Desai</field>
-          <field name="role" title="Role" type="text">Engineering Manager</field>
-          <field name="company" title="Company" type="text">Acme Corp</field>
-          <field name="quote" title="Quote" type="text">Alex consistently delivers high-quality code and communicates trade-offs clearly.</field>
-          <field name="avatar-src" title="Avatar Src" type="text">https://placehold.co/96x96/white/black?text=P</field>
-        </item>
-        <item index="1">
-          <field name="name" title="Name" type="text">Marco Silva</field>
-          <field name="role" title="Role" type="text">Tech Lead</field>
-          <field name="company" title="Company" type="text">Nimbus</field>
-          <field name="quote" title="Quote" type="text">A reliable collaborator who accelerates teams with great DX and automation.</field>
-          <field name="avatar-src" title="Avatar Src" type="text">https://placehold.co/96x96/white/black?text=M</field>
-        </item>
-        <item index="2">
-          <field name="name" title="Name" type="text">Sara Kimu</field>
-          <field name="role" title="Role" type="text">Product Manager</field>
-          <field name="company" title="Company" type="text">Northwin</field>
-          <field name="quote" title="Quote" type="text">Thoughtful, pragmatic, and customer-oriented ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ a joy to work with.</field>
-          <field name="avatar-src" title="Avatar Src" type="text">https://placehold.co/96x96/white/black?text=S</field>
-        </item>
-      </prop>
-        <prop name="reviews-grid-gap" title="Grid Gap" type="select">
-          <value>24px</value>
-          <options>
-          <option>0px</option>
-          <option>4px</option>
-          <option>8px</option>
-          <option>12px</option>
-          <option>16px</option>
-          <option>20px</option>
-          <option>24px</option>
-          <option>32px</option>
-          <option>40px</option>
-          <option>48px</option>
-          </options>
-        </prop>
-        <prop name="reviews-columns" title="Columns (md+)" type="select">
-          <value>3</value>
-          <options>
-          <option>1</option>
-          <option>2</option>
-          <option>3</option>
-          </options>
-        </prop>
-        <prop name="reviews-card-radius" title="Card Border Radius" type="select">
-          <value>16px</value>
-          <options>
-          <option>0px</option>
-          <option>4px</option>
-          <option>8px</option>
-          <option>12px</option>
-          <option>16px</option>
-          <option>20px</option>
-          <option>24px</option>
-          <option>32px</option>
-          </options>
-        </prop>
-        <prop name="reviews-card-padding" title="Card Padding" type="select">
-          <value>16px</value>
-          <options>
-          <option>0px</option>
-          <option>4px</option>
-          <option>8px</option>
-          <option>12px</option>
-          <option>16px</option>
-          <option>20px</option>
-          <option>24px</option>
-          <option>32px</option>
-          <option>40px</option>
-          </options>
-        </prop>
-        <prop name="reviews-quote-size" title="Quote Font Size" type="select">
-          <value>1rem</value>
-          <options>
-          <option>0rem</option>
-          <option>0.25rem</option>
-          <option>0.5rem</option>
-          <option>0.75rem</option>
-          <option>1rem</option>
-          <option>1.25rem</option>
-          <option>1.5rem</option>
-          <option>2rem</option>
-          </options>
-        </prop>
-        <prop name="reviews-author-size" title="Author Font Size" type="select">
-          <value>1rem</value>
-          <options>
-          <option>0rem</option>
-          <option>0.25rem</option>
-          <option>0.5rem</option>
-          <option>0.75rem</option>
-          <option>1rem</option>
-          <option>1.25rem</option>
-          <option>1.5rem</option>
-          </options>
-        </prop>
-        <prop name="reviews-avatar-radius" title="Avatar Radius" type="select">
-          <value>12px</value>
-          <options>
-          <option>0px</option>
-          <option>4px</option>
-          <option>8px</option>
-          <option>12px</option>
-          <option>16px</option>
-          <option>20px</option>
-          <option>24px</option>
-          <option>32px</option>
-          </options>
-        </prop>
-        <prop name="reviews-show-stars" title="Show Star Rating" type="boolean">true</prop>
-        <prop name="reviews-star-size" title="Star Icon Size" type="select">
-          <value>16px</value>
-          <options>
-          <option>0px</option>
-          <option>4px</option>
-          <option>8px</option>
-          <option>12px</option>
-          <option>16px</option>
-          <option>20px</option>
-          <option>24px</option>
-          </options>
-        </prop>
-      </props>
-    </node>
   </nodes>
 
   <edges>
@@ -733,6 +598,5 @@
     <edge id="portfolio-page-projects-section" source="portfolio-page" target="projects-section" role="links-to"/>
     <edge id="portfolio-page-about-section" source="portfolio-page" target="about-section" role="links-to"/>
     <edge id="portfolio-page-contact-footer" source="portfolio-page" target="contact-footer" role="links-to"/>
-    <edge id="portfolio-page-reviews" source="portfolio-page" target="reviews" role="links-to"/>
   </edges>
 </graph>

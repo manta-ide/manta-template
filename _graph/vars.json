@@ -1,8 +1,8 @@
 {
   "is-dark-theme": true,
   "root-styles": {
-    "background-color": "#ab4a4a",
-    "text-color": "#dd4290",
+    "background-color": "#000000",
+    "text-color": "#e3e3b1",
     "accent-color": "#7c34cd",
     "muted-color": "#b2adac",
     "border-color": "#161a1d",
@@ -71,7 +71,7 @@
       "live": "https://example.com/realtime-dashboard"
     },
     {
-      "title": "API Platform",
+      "title": "API Platform 123",
       "description": "Scalable REST and GraphQL APIs with robust observability.",
       "image": "https://placehold.co/512x400/white/black?text=API+Platform&font=Poppins",
       "tech": "Node.js, TypeScript, PostgreSQL, Docker, AWS",
@@ -107,44 +107,10 @@
   "contact-email": "hello@example.com",
   "contact-twitter": "https://twitter.com/yourhandle",
   "contact-linkedin": "https://www.linkedin.com/in/yourhandle/",
-  "footer-text": "ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ© 2025 Alex. All rights reserved.",
+  "footer-text": "2025 Alex. All rights reserved.1111235",
   "form-gap": "16px",
   "input-radius": "12px",
   "button-radius": "12px",
   "footer-padding-y": "24px",
-  "is-accent-submit": true,
-  "reviews-section-title": "Testimonials",
-  "reviews-section-subtitle": "What clients and collaborators say",
-  "reviews-items": [
-    {
-      "name": "Priya Desai",
-      "role": "Engineering Manager",
-      "company": "Acme Corp",
-      "quote": "Alex consistently delivers high-quality code and communicates trade-offs clearly.",
-      "avatar-src": "https://placehold.co/96x96/white/black?text=P"
-    },
-    {
-      "name": "Marco Silva",
-      "role": "Tech Lead",
-      "company": "Nimbus",
-      "quote": "A reliable collaborator who accelerates teams with great DX and automation.",
-      "avatar-src": "https://placehold.co/96x96/white/black?text=M"
-    },
-    {
-      "name": "Sara Kimu",
-      "role": "Product Manager",
-      "company": "Northwin",
-      "quote": "Thoughtful, pragmatic, and customer-oriented ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ¢ÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂÃÂ a joy to work with.",
-      "avatar-src": "https://placehold.co/96x96/white/black?text=S"
-    }
-  ],
-  "reviews-grid-gap": "24px",
-  "reviews-columns": "3",
-  "reviews-card-radius": "16px",
-  "reviews-card-padding": "16px",
-  "reviews-quote-size": "1rem",
-  "reviews-author-size": "1rem",
-  "reviews-avatar-radius": "12px",
-  "reviews-show-stars": true,
-  "reviews-star-size": "16px"
+  "is-accent-submit": true
 }
