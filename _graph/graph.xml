@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <graph xmlns="urn:app:graph" version="1.0" directed="true">
   <nodes>
-    <node id="app" title="Simple App">
+    <node id="app" title="Simple App" x="0" y="0" z="0">
       <description>A simple app component with basic styling - background color, text color, font family, and font size.</description>
       <state status="active">
         <build status="built"/>
       </state>
       <props>
-        <prop name="is-dark-theme" title="Is Dark Theme" type="boolean">false</prop>
+        <prop name="is-dark-theme" title="Is Dark Theme" type="boolean"></prop>
         <prop name="root-styles" title="Root Styles" type="object">
         <field name="background-color" title="Background Color" type="color">#ffffff</field>
         <field name="text-color" title="Text Color" type="color">#000000</field>
@@ -37,4 +37,7 @@
       </props>
     </node>
   </nodes>
+
+  <edges>
+  </edges>
 </graph>
