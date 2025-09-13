@@ -27,6 +27,11 @@ function ensureGoogleFontLoaded(family: string | undefined) {
   if (link.href !== href) link.href = href;
 }
 
+function sanitizeCssVarName(key: string) {
+  // CSS custom properties are identifiers; dots are not valid. Replace with hyphens.
+  return key.replace(/\./g, "-");
+}
+
 function applyCssVarsFrom(vars: Vars) {
   if (typeof document === "undefined") return;
   const root = document.documentElement;
@@ -47,14 +52,21 @@ function applyCssVarsFrom(vars: Vars) {
 
     // Handle simple CSS values (strings, numbers, booleans)
     if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
-      set(`${prefix}${key}`, value.toString());
+      const rawName = `${prefix}${key}`;
+      const aliasName = `${prefix}${sanitizeCssVarName(key)}`;
+      // Set both the raw (for completeness) and the sanitized alias that CSS can consume
+      set(rawName, value.toString());
+      if (aliasName !== rawName) set(aliasName, value.toString());
       return;
     }
 
     // Handle font objects specially - extract family and load Google font
-    if (key.includes('font') && typeof value === 'object' && !Array.isArray(value) && value.family) {
+    if (key.includes('font') && typeof value === 'object' && !Array.isArray(value) && (value as any).family) {
       const family = value.family as string;
-      set(`${prefix}font-family`, family);
+      const rawName = `${prefix}font-family`;
+      const aliasName = `${prefix}${sanitizeCssVarName('font-family')}`;
+      set(rawName, family);
+      if (aliasName !== rawName) set(aliasName, family);
       ensureGoogleFontLoaded(family);
       return;
     }
