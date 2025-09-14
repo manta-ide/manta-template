@@ -9,7 +9,7 @@ A simple, open format for guiding coding agents, used by over 20k open-source pr
 
 ## Variable System Usage
 
-This project uses a dynamic variable system for theming and configuration. Variables are stored in `_graph/vars.json` and automatically applied as CSS custom properties.
+This project uses a dynamic variable system for theming and configuration. Variables are stored in `_graph/vars.json` and automatically applied as CSS custom properties. The variables will be used once you build the graph, so the vars.json will be updated based on the graph, and you should implement all properties using the vars, or they won't be exposed to the user.
 
 ### How to use variables in components:
 
