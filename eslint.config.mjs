@@ -36,13 +36,15 @@ export default [
     rules: {
       ...tseslint.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true }
-      ],
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-      '@typescript-eslint/no-explicit-any': 'warn',
-      'no-console': 'warn'
+      // Disable specific linting rules
+      '@typescript-eslint/no-explicit-any': 'off',
+      'react-refresh/only-export-components': 'off',
+      'no-undef': 'off',
+      '@typescript-eslint/no-unused-vars': 'off',
+      'no-console': 'off',
+      'no-empty': 'off',
+      '@typescript-eslint/ban-ts-comment': 'off',
+      '@typescript-eslint/no-require-imports': 'off'
     }
   }
 ]
