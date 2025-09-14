@@ -29,7 +29,7 @@ function frameHeaders(): Plugin {
 }
 
 function graphVarsMiddleware(): Plugin {
-  // Variables are now stored in graph.xml, this endpoint returns empty for compatibility
+  // Variables are now stored in current-graph.xml, this endpoint returns empty for compatibility
   const route = '/iframe/__graph/vars';
   return {
     name: 'graph-vars-middleware',
@@ -87,7 +87,7 @@ export default defineConfig(({ mode }) => {
     server: {
       watch: {
         usePolling: true,
-        ignored: ['**/_graph/graph.xml', '**/_graph/jobs.json', '**/_graph/vars.json'],
+        ignored: ['**/_graph/current-graph.xml', '**/_graph/base-graph.xml', '**/_graph/jobs.json', '**/_graph/vars.json'],
       },
       host: true,
       port: 5173,

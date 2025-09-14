@@ -70,7 +70,7 @@ await publishVarsUpdate({
 
 ### ⚠️ Do NOT edit these directories directly:
 - `/lib` - Contains core utility functions and variable management
-- `/_graph` - Contains system configuration files (graph.xml, vars.json, jobs.json)
+- `/_graph` - Contains system configuration files (current-graph.xml, base-graph.xml vars.json, jobs.json)
 
 ### Instead:
 - Modify variables through the provided APIs in your components
