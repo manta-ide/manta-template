@@ -1,0 +1,86 @@
+{
+  "is-dark-theme": "",
+  "root-styles": {
+    "background-color": "#efefef",
+    "text-color": "#000000",
+    "font-family": "Arial",
+    "base-font-size": "1rem"
+  },
+  "header-styles": {
+    "background-color": "#be3535",
+    "text-color": "#ffffff",
+    "height": "6rem",
+    "padding-x": "2rem"
+  },
+  "logo": {
+    "text": "MyApp",
+    "font-size": "1.5rem",
+    "font-weight": "bold"
+  },
+  "nav-links": [
+    {
+      "label": "Home",
+      "href": "#home"
+    },
+    {
+      "label": "About",
+      "href": "#about"
+    },
+    {
+      "label": "Services",
+      "href": "#services"
+    },
+    {
+      "label": "Contact",
+      "href": "#contact"
+    }
+  ],
+  "hero-styles": {
+    "background-gradient-start": "#e1e3ee",
+    "background-gradient-end": "#764ba2",
+    "text-color": "#ffffff",
+    "padding-y": "5rem",
+    "padding-x": "3rem"
+  },
+  "hero-content": {
+    "headline": "Welcome to Our Platform",
+    "subheadline": "Build amazing experiences with our powerful tools",
+    "cta-text": "Get Started",
+    "cta-href": "#start"
+  },
+  "hero-typography": {
+    "headline-size": "3.5rem",
+    "subheadline-size": "1.25rem",
+    "headline-weight": "bold",
+    "text-align": "center"
+  },
+  "initial-count": 0,
+  "increment-step": 1,
+  "counter-styles": {
+    "background-color": "",
+    "number-color": "",
+    "number-size": "[100]",
+    "padding": "",
+    "border-radius": ""
+  },
+  "button-styles": {
+    "button-color": "",
+    "button-hover-color": "",
+    "button-text-color": "",
+    "button-size": "large",
+    "button-spacing": ""
+  },
+  "labels": {
+    "section-title": "",
+    "increment-label": "",
+    "decrement-label": "",
+    "reset-label": ""
+  },
+  "features": {
+    "show-reset": true,
+    "show-title": "",
+    "enable-keyboard": "",
+    "min-value": 0,
+    "max-value": 17
+  }
+}
