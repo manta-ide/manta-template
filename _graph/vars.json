@@ -7,7 +7,7 @@
     "base-font-size": "1rem"
   },
   "header-styles": {
-    "background-color": "#b64646",
+    "background-color": "#8c74a8",
     "text-color": "#ffffff",
     "height": "6rem",
     "padding-x": "2rem"
@@ -53,36 +53,5 @@
     "subheadline-size": "1.25rem",
     "headline-weight": "bold",
     "text-align": "center"
-  },
-  "initial-count": 0,
-  "increment-step": 1,
-  "counter-styles": {
-    "background-color": "",
-    "number-color": "",
-    "number-size": [
-      100
-    ],
-    "padding": "",
-    "border-radius": ""
-  },
-  "button-styles": {
-    "button-color": "",
-    "button-hover-color": "",
-    "button-text-color": "",
-    "button-size": "large",
-    "button-spacing": ""
-  },
-  "labels": {
-    "section-title": "",
-    "increment-label": "",
-    "decrement-label": "",
-    "reset-label": ""
-  },
-  "features": {
-    "show-reset": true,
-    "show-title": "",
-    "enable-keyboard": "",
-    "min-value": 0,
-    "max-value": 17
   }
 }

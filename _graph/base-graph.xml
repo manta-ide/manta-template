@@ -179,48 +179,6 @@
       </prop>
       </props>
     </node>
-
-    <node id="counter-section" title="Counter Section" x="821.7695891481648" y="292.3487322705142" z="0">
-      <description>Create a counter section with a number display and increment/decrement buttons. Include the current count value prominently displayed.</description>
-      <props>
-        <prop name="initial-count" title="Initial Count" type="number">0</prop>
-        <prop name="increment-step" title="Increment Step" type="number">1</prop>
-        <prop name="counter-styles" title="Counter Styles" type="object">
-        <field name="background-color" title="Background Color" type="color"></field>
-        <field name="number-color" title="Number Color" type="color"></field>
-        <field name="number-size" title="Number Size" type="slider"></field>
-        <field name="padding" title="Padding" type="slider"></field>
-        <field name="border-radius" title="Border Radius" type="slider"></field>
-      </prop>
-        <prop name="button-styles" title="Button Styles" type="object">
-        <field name="button-color" title="Button Color" type="color"></field>
-        <field name="button-hover-color" title="Button Hover Color" type="color"></field>
-        <field name="button-text-color" title="Button Text Color" type="color"></field>
-        <field name="button-size" title="Button Size" type="select">
-          <value></value>
-          <options>
-          <option>small</option>
-          <option>medium</option>
-          <option>large</option>
-          </options>
-        </field>
-        <field name="button-spacing" title="Button Spacing" type="slider"></field>
-      </prop>
-        <prop name="labels" title="Labels" type="object">
-        <field name="section-title" title="Section Title" type="text"></field>
-        <field name="increment-label" title="Increment Button Label" type="text"></field>
-        <field name="decrement-label" title="Decrement Button Label" type="text"></field>
-        <field name="reset-label" title="Reset Button Label" type="text"></field>
-      </prop>
-        <prop name="features" title="Features" type="object">
-        <field name="show-reset" title="Show Reset Button" type="boolean"></field>
-        <field name="show-title" title="Show Section Title" type="boolean"></field>
-        <field name="enable-keyboard" title="Enable Keyboard Controls" type="boolean"></field>
-        <field name="min-value" title="Minimum Value" type="number"></field>
-        <field name="max-value" title="Maximum Value" type="number"></field>
-      </prop>
-      </props>
-    </node>
   </nodes>
 
   <edges>
