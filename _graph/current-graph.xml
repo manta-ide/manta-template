@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <graph xmlns="urn:app:graph" version="1.0" directed="true">
   <nodes>
-    <node id="app" title="Simple App" x="1077.8838654903236" y="-237.8072945008135" z="0">
+    <node id="app" title="Simple App" x="0" y="0" z="0">
       <description>A simple app component with basic styling - background color, text color, font family, and font size.</description>
       <props>
         <prop name="is-dark-theme" title="Is Dark Theme" type="boolean"></prop>
         <prop name="root-styles" title="Root Styles" type="object">
-        <field name="background-color" title="Background Color" type="color">#e8dede</field>
+        <field name="background-color" title="Background Color" type="color">#ebd4d4</field>
         <field name="text-color" title="Text Color" type="color">#000000</field>
         <field name="font-family" title="Font Family" type="select">
           <value>Arial</value>
@@ -34,11 +34,11 @@
       </props>
     </node>
 
-    <node id="node-1758061078838971" title="Header" x="581.708880982156" y="-485.96215019416616" z="0">
+    <node id="node-1758061078838971" title="Header" x="3.919447171651356" y="295.11960746591046" z="0">
       <description>One color header bar with nav links</description>
       <props>
         <prop name="header-styles" title="Header Styles" type="object">
-        <field name="background-color" title="Background Color" type="color">#8c74a8</field>
+        <field name="background-color" title="Background Color" type="color">#cc91ef</field>
         <field name="text-color" title="Text Color" type="color">#ffffff</field>
         <field name="height" title="Header Height" type="select">
           <value>6rem</value>
@@ -95,19 +95,21 @@
           <field name="label" title="Link Text" type="text">Services</field>
           <field name="href" title="Link URL" type="text">#services</field>
         </item>
-        <item index="3">
-          <field name="label" title="Link Text" type="text">Contact</field>
-          <field name="href" title="Link URL" type="text">#contact</field>
-        </item>
       </prop>
       </props>
     </node>
 
-    <node id="node-1758061687539528" title="Hero section" x="292.11185710430254" y="74.45312278066837" z="0">
+    <node id="node-1758061687539528" title="Hero section" x="362.3458605995344" y="301.4403549446807" z="0">
       <description>Hero section with a few texts and a gradient</description>
       <props>
+        <prop name="hero-content" title="Hero Content" type="object">
+        <field name="headline" title="Main Headline" type="text">Welcome to Our Platform</field>
+        <field name="subheadline" title="Subheadline" type="textarea">Build amazing experiences with our powerful tools</field>
+        <field name="cta-text" title="Call-to-Action Text" type="text">Get Started</field>
+        <field name="cta-href" title="Call-to-Action Link" type="text">#start</field>
+      </prop>
         <prop name="hero-styles" title="Hero Styles" type="object">
-        <field name="background-gradient-start" title="Gradient Start Color" type="color">#e6e6e6</field>
+        <field name="background-gradient-start" title="Gradient Start Color" type="color">#e8e8e9</field>
         <field name="background-gradient-end" title="Gradient End Color" type="color">#764ba2</field>
         <field name="text-color" title="Text Color" type="color">#ffffff</field>
         <field name="padding-y" title="Vertical Padding" type="select">
@@ -130,12 +132,6 @@
           <option>3rem</option>
           </options>
         </field>
-      </prop>
-        <prop name="hero-content" title="Hero Content" type="object">
-        <field name="headline" title="Main Headline" type="text">Welcome to Our Platform</field>
-        <field name="subheadline" title="Subheadline" type="textarea">Build amazing experiences with our powerful tools</field>
-        <field name="cta-text" title="Call-to-Action Text" type="text">Get Started</field>
-        <field name="cta-href" title="Call-to-Action Link" type="text">#start</field>
       </prop>
         <prop name="hero-typography" title="Typography" type="object">
         <field name="headline-size" title="Headline Font Size" type="select">
@@ -179,10 +175,83 @@
       </prop>
       </props>
     </node>
+
+    <node id="node-1758329851379349" title="Footer" x="-461.02627839657237" y="296.6729636431011" z="0">
+      <description>Footer section with social links</description>
+      <props>
+        <prop name="footer-content" title="Footer Content" type="object">
+        <field name="company-name" title="Company Name" type="text">Your Company</field>
+        <field name="company-description" title="Company Description" type="textarea">Building amazing experiences for our customers.</field>
+        <field name="copyright" title="Copyright Text" type="text">© 2024 Your Company. All rights reserved.</field>
+        <field name="link-about-text" title="About Link Text" type="text">About</field>
+        <field name="link-about-href" title="About Link URL" type="text">#about</field>
+        <field name="link-services-text" title="Services Link Text" type="text">Services</field>
+        <field name="link-services-href" title="Services Link URL" type="text">#services</field>
+        <field name="link-contact-text" title="Contact Link Text" type="text">Contact</field>
+        <field name="link-contact-href" title="Contact Link URL" type="text">#contact</field>
+        <field name="link-privacy-text" title="Privacy Link Text" type="text">Privacy Policy</field>
+        <field name="link-privacy-href" title="Privacy Link URL" type="text">#privacy</field>
+      </prop>
+        <prop name="footer-styles" title="Footer Styles" type="object">
+        <field name="background-color" title="Background Color" type="color">#764ba2</field>
+        <field name="text-color" title="Text Color" type="color">#f9fafb</field>
+        <field name="border-color" title="Border Color" type="color">#473752</field>
+        <field name="padding-y" title="Vertical Padding" type="text">3rem</field>
+        <field name="padding-x" title="Horizontal Padding" type="text">2rem</field>
+        <field name="link-color" title="Link Color" type="color">#efd6ff</field>
+        <field name="link-hover-color" title="Link Hover Color" type="color">#de92fc</field>
+      </prop>
+        <prop name="social-links" title="Social Media Links" type="object-list">
+        <item index="0">
+          <field name="platform" title="Platform" type="select">
+          <value>facebook</value>
+          <options>
+          <option>facebook</option>
+          <option>twitter</option>
+          <option>instagram</option>
+          <option>linkedin</option>
+          <option>github</option>
+          <option>youtube</option>
+          </options>
+        </field>
+          <field name="url" title="URL" type="text">https://facebook.com/yourcompany</field>
+        </item>
+        <item index="1">
+          <field name="platform" title="Platform" type="select">
+          <value>twitter</value>
+          <options>
+          <option>facebook</option>
+          <option>twitter</option>
+          <option>instagram</option>
+          <option>linkedin</option>
+          <option>github</option>
+          <option>youtube</option>
+          </options>
+        </field>
+          <field name="url" title="URL" type="text">https://twitter.com/yourcompany</field>
+        </item>
+        <item index="2">
+          <field name="platform" title="Platform" type="select">
+          <value>linkedin</value>
+          <options>
+          <option>facebook</option>
+          <option>twitter</option>
+          <option>instagram</option>
+          <option>linkedin</option>
+          <option>github</option>
+          <option>youtube</option>
+          </options>
+        </field>
+          <field name="url" title="URL" type="text">https://linkedin.com/company/yourcompany</field>
+        </item>
+      </prop>
+      </props>
+    </node>
   </nodes>
 
   <edges>
     <edge id="app-node-1758061078838971" source="app" target="node-1758061078838971" role="links-to"/>
     <edge id="app-node-1758061687539528" source="app" target="node-1758061687539528" role="links-to"/>
+    <edge id="node-1758329851379349-app" source="node-1758329851379349" target="app" role="links-to"/>
   </edges>
 </graph>

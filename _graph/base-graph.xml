@@ -179,10 +179,83 @@
       </prop>
       </props>
     </node>
+
+    <node id="node-1758329851379349" title="Footer" x="-392.8374611573769" y="409.07776991586854" z="0">
+      <description>Footer section with social links</description>
+      <props>
+        <prop name="footer-styles" title="Footer Styles" type="object">
+        <field name="background-color" title="Background Color" type="color">#1f2937</field>
+        <field name="text-color" title="Text Color" type="color">#f9fafb</field>
+        <field name="border-color" title="Border Color" type="color">#374151</field>
+        <field name="padding-y" title="Vertical Padding" type="text">3rem</field>
+        <field name="padding-x" title="Horizontal Padding" type="text">2rem</field>
+        <field name="link-color" title="Link Color" type="color">#60a5fa</field>
+        <field name="link-hover-color" title="Link Hover Color" type="color">#93c5fd</field>
+      </prop>
+        <prop name="footer-content" title="Footer Content" type="object">
+        <field name="company-name" title="Company Name" type="text">Your Company</field>
+        <field name="company-description" title="Company Description" type="textarea">Building amazing experiences for our customers.</field>
+        <field name="copyright" title="Copyright Text" type="text">© 2024 Your Company. All rights reserved.</field>
+        <field name="link-about-text" title="About Link Text" type="text">About</field>
+        <field name="link-about-href" title="About Link URL" type="text">#about</field>
+        <field name="link-services-text" title="Services Link Text" type="text">Services</field>
+        <field name="link-services-href" title="Services Link URL" type="text">#services</field>
+        <field name="link-contact-text" title="Contact Link Text" type="text">Contact</field>
+        <field name="link-contact-href" title="Contact Link URL" type="text">#contact</field>
+        <field name="link-privacy-text" title="Privacy Link Text" type="text">Privacy Policy</field>
+        <field name="link-privacy-href" title="Privacy Link URL" type="text">#privacy</field>
+      </prop>
+        <prop name="social-links" title="Social Media Links" type="object-list">
+        <item index="0">
+          <field name="platform" title="Platform" type="select">
+          <value>facebook</value>
+          <options>
+          <option>facebook</option>
+          <option>twitter</option>
+          <option>instagram</option>
+          <option>linkedin</option>
+          <option>github</option>
+          <option>youtube</option>
+          </options>
+        </field>
+          <field name="url" title="URL" type="text">https://facebook.com/yourcompany</field>
+        </item>
+        <item index="1">
+          <field name="platform" title="Platform" type="select">
+          <value>twitter</value>
+          <options>
+          <option>facebook</option>
+          <option>twitter</option>
+          <option>instagram</option>
+          <option>linkedin</option>
+          <option>github</option>
+          <option>youtube</option>
+          </options>
+        </field>
+          <field name="url" title="URL" type="text">https://twitter.com/yourcompany</field>
+        </item>
+        <item index="2">
+          <field name="platform" title="Platform" type="select">
+          <value>linkedin</value>
+          <options>
+          <option>facebook</option>
+          <option>twitter</option>
+          <option>instagram</option>
+          <option>linkedin</option>
+          <option>github</option>
+          <option>youtube</option>
+          </options>
+        </field>
+          <field name="url" title="URL" type="text">https://linkedin.com/company/yourcompany</field>
+        </item>
+      </prop>
+      </props>
+    </node>
   </nodes>
 
   <edges>
     <edge id="app-node-1758061078838971" source="app" target="node-1758061078838971" role="links-to"/>
     <edge id="app-node-1758061687539528" source="app" target="node-1758061687539528" role="links-to"/>
+    <edge id="node-1758329851379349-app" source="node-1758329851379349" target="app" role="links-to"/>
   </edges>
 </graph>
