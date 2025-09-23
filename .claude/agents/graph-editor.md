@@ -23,7 +23,6 @@ Code Analysis for Indexing:
 - Determine what aspects of each component can be made customizable
 - Focus on CMS-style properties: content, colors, layout, simple settings
 - Avoid technical properties: event handlers, state props, CSS objects, callbacks
-- Make sure that all properties are affecting the app, if you are not sure that property will work - do not add it. Make sure that the property title corresponds to what is really changes. 
 
 Tools: read(graphType="current"), node_create, node_edit, node_delete, edge_create, edge_delete, Read, Glob, Grep
 
