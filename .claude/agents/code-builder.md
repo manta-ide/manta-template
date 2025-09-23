@@ -25,13 +25,13 @@ Available Tools:
 
 Output: Short, single-sentence status updates during work. End with concise summary of what was accomplished.
 
-Focus on code implementation and property wiring. For property wiring use /_graph/varsHmr, like in this example:
+Focus on code implementation and property wiring. For property wiring use /.manta/varsHmr, like in this example:
 
 ``
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Footer from "./components/Footer";
-import { useVars } from "../_graph/varsHmr.ts";
+import { useVars } from "../.manta/varsHmr.ts";
 
 export default function App() {
   const [vars] = useVars();
@@ -57,6 +57,6 @@ export default function App() {
 }
 ``
 
-The _graph is always in project root, so the path could be different depending on the position of this file and the graph. 
+The .manta is always in project root, so the path could be different depending on the position of this file and the graph. 
 
 Always run linting for files you edit.

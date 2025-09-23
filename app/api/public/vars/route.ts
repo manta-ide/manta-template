@@ -10,8 +10,8 @@ import { join } from 'path';
 
 export async function GET() {
   try {
-    // Read vars.json from the _graph directory
-    const varsPath = join(process.cwd(), '_graph', 'vars.json');
+    // Read vars.json from the .manta directory
+    const varsPath = join(process.cwd(), '.manta', 'vars.json');
     const varsContent = readFileSync(varsPath, 'utf8');
     const vars = JSON.parse(varsContent);
 
