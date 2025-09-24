@@ -1,8 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <graph xmlns="urn:app:graph" version="1.0" directed="true">
   <nodes>
+    <node id="header" title="Header" x="0" y="0" z="0">
+      <description>A responsive navigation header component with mobile menu dialog, theme toggle, and smooth active section highlighting. Features sticky positioning with backdrop blur effects and animated transitions.</description>
+      <props>
+        <prop name="navigation-links" title="Navigation Links" type="object-list">
+        <item index="0">
+          <field name="name" title="Link Text" type="text">Home</field>
+          <field name="hash" title="Section Hash" type="text">#home</field>
+        </item>
+        <item index="1">
+          <field name="name" title="Link Text" type="text">About</field>
+          <field name="hash" title="Section Hash" type="text">#about</field>
+        </item>
+        <item index="2">
+          <field name="name" title="Link Text" type="text">Experience</field>
+          <field name="hash" title="Section Hash" type="text">#experience</field>
+        </item>
+        <item index="3">
+          <field name="name" title="Link Text" type="text">Projects</field>
+          <field name="hash" title="Section Hash" type="text">#projects</field>
+        </item>
+        <item index="4">
+          <field name="name" title="Link Text" type="text">Contact</field>
+          <field name="hash" title="Section Hash" type="text">#contact</field>
+        </item>
+      </prop>
+        <prop name="mobile-menu-label" title="Mobile Menu Button Text" type="text">Menu</prop>
+        <prop name="mobile-dialog-title" title="Mobile Navigation Title" type="text">Navigation</prop>
+        <prop name="header-styles" title="Header Appearance" type="object">
+        <field name="background-opacity" title="Background Opacity" type="slider">[36]</field>
+        <field name="border-radius" title="Border Radius" type="select">
+          <value>full</value>
+          <options>
+          <option>none</option>
+          <option>small</option>
+          <option>medium</option>
+          <option>large</option>
+          <option>full</option>
+          </options>
+        </field>
+        <field name="backdrop-blur" title="Enable Backdrop Blur" type="boolean">true</field>
+        <field name="sticky-position" title="Sticky Positioning" type="boolean">true</field>
+      </prop>
+        <prop name="animation-settings" title="Animation Settings" type="object">
+        <field name="entrance-animation" title="Enable Entrance Animation" type="boolean">true</field>
+        <field name="active-indicator" title="Show Active Section Indicator" type="boolean">true</field>
+        <field name="spring-stiffness" title="Animation Stiffness" type="slider">380</field>
+        <field name="spring-damping" title="Animation Damping" type="slider">30</field>
+      </prop>
+        <prop name="layout-spacing" title="Layout &amp; Spacing" type="object">
+        <field name="top-margin" title="Top Margin (Mobile)" type="number">5</field>
+        <field name="desktop-top-margin" title="Top Margin (Desktop)" type="number">10</field>
+        <field name="horizontal-padding" title="Horizontal Padding" type="number">2</field>
+        <field name="vertical-padding" title="Vertical Padding" type="number">3</field>
+        <field name="nav-gap" title="Navigation Items Gap" type="number">5</field>
+      </prop>
+        <prop name="mobile-features" title="Mobile Features" type="object">
+        <field name="show-theme-toggle" title="Show Theme Toggle on Mobile" type="boolean">true</field>
+        <field name="show-mobile-menu" title="Enable Mobile Menu" type="boolean">true</field>
+        <field name="dialog-width" title="Mobile Dialog Width (%)" type="slider">90</field>
+      </prop>
+      </props>
+    </node>
   </nodes>
 
   <edges>
+
   </edges>
 </graph>

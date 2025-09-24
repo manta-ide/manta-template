@@ -1,1 +1,54 @@
-{}
+{
+  "header": {
+    "navigation-links": [
+      {
+        "name": "Home",
+        "hash": "#home"
+      },
+      {
+        "name": "About",
+        "hash": "#about"
+      },
+      {
+        "name": "Experience",
+        "hash": "#experience"
+      },
+      {
+        "name": "Projects",
+        "hash": "#projects"
+      },
+      {
+        "name": "Contact",
+        "hash": "#contact"
+      }
+    ],
+    "mobile-menu-label": "Menu",
+    "mobile-dialog-title": "Navigation",
+    "header-styles": {
+      "background-opacity": [
+        36
+      ],
+      "border-radius": "full",
+      "backdrop-blur": true,
+      "sticky-position": true
+    },
+    "animation-settings": {
+      "entrance-animation": true,
+      "active-indicator": true,
+      "spring-stiffness": "380",
+      "spring-damping": "30"
+    },
+    "layout-spacing": {
+      "top-margin": 5,
+      "desktop-top-margin": 10,
+      "horizontal-padding": 2,
+      "vertical-padding": 3,
+      "nav-gap": 5
+    },
+    "mobile-features": {
+      "show-theme-toggle": true,
+      "show-mobile-menu": true,
+      "dialog-width": "90"
+    }
+  }
+}
