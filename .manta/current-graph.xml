@@ -1,8 +1,607 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <graph xmlns="urn:app:graph" version="1.0" directed="true">
   <nodes>
+    <node id="intro-section" title="Intro Section" x="1942.9821136391197" y="259.5865593371602" z="0">
+      <description>Hero/intro section with availability status, main title, description, and call-to-action buttons including contact, CV download, and social links</description>
+      <props>
+        <prop name="availability-status" title="Availability Status" type="object">
+        <field name="text" title="Status Text" type="text">Available for work!</field>
+        <field name="indicatorColor" title="Status Indicator Color" type="color">#10b981</field>
+        <field name="visible" title="Show Status" type="boolean">true</field>
+      </prop>
+        <prop name="main-title" title="Main Title" type="object">
+        <field name="prefix" title="Title Prefix" type="text">Hi I&apos;m a</field>
+        <field name="highlight" title="Highlighted Word" type="text">Frontend</field>
+        <field name="suffix" title="Title Suffix" type="text">developer creating modern web apps.</field>
+        <field name="highlightColor" title="Highlight Color" type="color">#be185d</field>
+      </prop>
+        <prop name="description" title="Description Text" type="text">A frontend developer based in the Poland. I&apos;m passionate about building modern web applications using Next.js, React, and Tailwind CSS.</prop>
+        <prop name="contact-button" title="Contact Button" type="object">
+        <field name="text" title="Button Text" type="text">Get in touch</field>
+        <field name="visible" title="Show Button" type="boolean">true</field>
+      </prop>
+        <prop name="cv-download" title="CV Download" type="object">
+        <field name="text" title="Button Text" type="text">Download CV</field>
+        <field name="fileName" title="CV File Name" type="text">michalskolak.pdf</field>
+        <field name="visible" title="Show CV Button" type="boolean">true</field>
+      </prop>
+        <prop name="social-links" title="Social Links" type="object-list">
+        <item index="0">
+          <field name="platform" title="Platform Name" type="text">LinkedIn</field>
+          <field name="url" title="Profile URL" type="text">https://www.linkedin.com/in/micha%C5%82-skolak-06905524b</field>
+          <field name="visible" title="Show Link" type="boolean">true</field>
+        </item>
+        <item index="1">
+          <field name="platform" title="Platform Name" type="text">GitHub</field>
+          <field name="url" title="Profile URL" type="text">https://github.com/Skolaczk</field>
+          <field name="visible" title="Show Link" type="boolean">true</field>
+        </item>
+      </prop>
+      </props>
+    </node>
+
+    <node id="about-section" title="About Section" x="785.1008049712985" y="289.0684809114047" z="0">
+      <description>About me section with heading, personal description paragraphs, and integrated skills showcase</description>
+      <props>
+        <prop name="heading" title="Section Heading" type="text">About Me</prop>
+        <prop name="personal-story" title="Personal Story" type="text">I&apos;m Michał Skolak, I&apos;m a front-end developer from Poland. I&apos;ve been learning programming for over 3 years. After I started high school, I decided to pursue my passion for programming. My favorite part of programming is the problem-solving aspect. I love the feeling of finally figuring out a solution to a problem. I&apos;ve had the opportunity to work on several exciting projects during my learning journey, ranging from personal projects to collaborative ventures. My core stack is React, Next.js, TypeScript, and Tailwind CSS. I am also familiar with Nest.js and Prisma. I&apos;m always looking to learn new technologies.</prop>
+        <prop name="opportunity-statement" title="Opportunity Statement" type="text">I&apos;m open to Job opportunities where I can contribute, learn and grow. If you have a good opportunity that matches my skills and experience then don&apos;t hesitate to contact me.</prop>
+        <prop name="include-skills" title="Include Skills Section" type="boolean">true</prop>
+      </props>
+    </node>
+
+    <node id="skills-showcase" title="Skills Showcase" x="786.6524850541534" y="530.448319917145" z="0">
+      <description>Visual grid of technology skills with animated icons representing different programming languages and frameworks</description>
+      <props>
+        <prop name="skills-list" title="Skills" type="object-list">
+        <item index="0">
+          <field name="name" title="Skill Name" type="text">HTML</field>
+          <field name="category" title="Category" type="select">
+          <value>Frontend</value>
+          <options>
+          <option>Frontend</option>
+          <option>Backend</option>
+          <option>Full Stack</option>
+          <option>Database</option>
+          <option>DevOps</option>
+          <option>Design</option>
+          </options>
+        </field>
+          <field name="visible" title="Show Skill" type="boolean">true</field>
+        </item>
+        <item index="1">
+          <field name="name" title="Skill Name" type="text">CSS</field>
+          <field name="category" title="Category" type="select">
+          <value>Frontend</value>
+          <options>
+          <option>Frontend</option>
+          <option>Backend</option>
+          <option>Full Stack</option>
+          <option>Database</option>
+          <option>DevOps</option>
+          <option>Design</option>
+          </options>
+        </field>
+          <field name="visible" title="Show Skill" type="boolean">true</field>
+        </item>
+        <item index="2">
+          <field name="name" title="Skill Name" type="text">Sass</field>
+          <field name="category" title="Category" type="select">
+          <value>Frontend</value>
+          <options>
+          <option>Frontend</option>
+          <option>Backend</option>
+          <option>Full Stack</option>
+          <option>Database</option>
+          <option>DevOps</option>
+          <option>Design</option>
+          </options>
+        </field>
+          <field name="visible" title="Show Skill" type="boolean">true</field>
+        </item>
+        <item index="3">
+          <field name="name" title="Skill Name" type="text">Tailwind CSS</field>
+          <field name="category" title="Category" type="select">
+          <value>Frontend</value>
+          <options>
+          <option>Frontend</option>
+          <option>Backend</option>
+          <option>Full Stack</option>
+          <option>Database</option>
+          <option>DevOps</option>
+          <option>Design</option>
+          </options>
+        </field>
+          <field name="visible" title="Show Skill" type="boolean">true</field>
+        </item>
+        <item index="4">
+          <field name="name" title="Skill Name" type="text">JavaScript</field>
+          <field name="category" title="Category" type="select">
+          <value>Frontend</value>
+          <options>
+          <option>Frontend</option>
+          <option>Backend</option>
+          <option>Full Stack</option>
+          <option>Database</option>
+          <option>DevOps</option>
+          <option>Design</option>
+          </options>
+        </field>
+          <field name="visible" title="Show Skill" type="boolean">true</field>
+        </item>
+        <item index="5">
+          <field name="name" title="Skill Name" type="text">TypeScript</field>
+          <field name="category" title="Category" type="select">
+          <value>Frontend</value>
+          <options>
+          <option>Frontend</option>
+          <option>Backend</option>
+          <option>Full Stack</option>
+          <option>Database</option>
+          <option>DevOps</option>
+          <option>Design</option>
+          </options>
+        </field>
+          <field name="visible" title="Show Skill" type="boolean">true</field>
+        </item>
+        <item index="6">
+          <field name="name" title="Skill Name" type="text">React</field>
+          <field name="category" title="Category" type="select">
+          <value>Frontend</value>
+          <options>
+          <option>Frontend</option>
+          <option>Backend</option>
+          <option>Full Stack</option>
+          <option>Database</option>
+          <option>DevOps</option>
+          <option>Design</option>
+          </options>
+        </field>
+          <field name="visible" title="Show Skill" type="boolean">true</field>
+        </item>
+        <item index="7">
+          <field name="name" title="Skill Name" type="text">Redux</field>
+          <field name="category" title="Category" type="select">
+          <value>Frontend</value>
+          <options>
+          <option>Frontend</option>
+          <option>Backend</option>
+          <option>Full Stack</option>
+          <option>Database</option>
+          <option>DevOps</option>
+          <option>Design</option>
+          </options>
+        </field>
+          <field name="visible" title="Show Skill" type="boolean">true</field>
+        </item>
+        <item index="8">
+          <field name="name" title="Skill Name" type="text">Next.js</field>
+          <field name="category" title="Category" type="select">
+          <value>Full Stack</value>
+          <options>
+          <option>Frontend</option>
+          <option>Backend</option>
+          <option>Full Stack</option>
+          <option>Database</option>
+          <option>DevOps</option>
+          <option>Design</option>
+          </options>
+        </field>
+          <field name="visible" title="Show Skill" type="boolean">true</field>
+        </item>
+        <item index="9">
+          <field name="name" title="Skill Name" type="text">Nest.js</field>
+          <field name="category" title="Category" type="select">
+          <value>Backend</value>
+          <options>
+          <option>Frontend</option>
+          <option>Backend</option>
+          <option>Full Stack</option>
+          <option>Database</option>
+          <option>DevOps</option>
+          <option>Design</option>
+          </options>
+        </field>
+          <field name="visible" title="Show Skill" type="boolean">true</field>
+        </item>
+        <item index="10">
+          <field name="name" title="Skill Name" type="text">Prisma</field>
+          <field name="category" title="Category" type="select">
+          <value>Database</value>
+          <options>
+          <option>Frontend</option>
+          <option>Backend</option>
+          <option>Full Stack</option>
+          <option>Database</option>
+          <option>DevOps</option>
+          <option>Design</option>
+          </options>
+        </field>
+          <field name="visible" title="Show Skill" type="boolean">true</field>
+        </item>
+        <item index="11">
+          <field name="name" title="Skill Name" type="text">Docker</field>
+          <field name="category" title="Category" type="select">
+          <value>DevOps</value>
+          <options>
+          <option>Frontend</option>
+          <option>Backend</option>
+          <option>Full Stack</option>
+          <option>Database</option>
+          <option>DevOps</option>
+          <option>Design</option>
+          </options>
+        </field>
+          <field name="visible" title="Show Skill" type="boolean">true</field>
+        </item>
+      </prop>
+        <prop name="layout" title="Layout Settings" type="object">
+        <field name="itemsPerRow" title="Items Per Row" type="select">
+          <value>auto</value>
+          <options>
+          <option>auto</option>
+          <option>3</option>
+          <option>4</option>
+          <option>5</option>
+          <option>6</option>
+          </options>
+        </field>
+        <field name="spacing" title="Spacing" type="select">
+          <value>large</value>
+          <options>
+          <option>small</option>
+          <option>medium</option>
+          <option>large</option>
+          </options>
+        </field>
+        <field name="alignment" title="Alignment" type="select">
+          <value>center</value>
+          <options>
+          <option>left</option>
+          <option>center</option>
+          <option>right</option>
+          </options>
+        </field>
+      </prop>
+      </props>
+    </node>
+
+    <node id="experience-section" title="Experience Section">
+      <description>Timeline-style experience section showing professional work history with companies, roles, descriptions, and technologies used</description>
+      <props>
+        <prop name="experience-section-heading" title="Section Heading" type="text">My Experience</prop>
+        <prop name="experience-section-description" title="Section Description" type="text">Professional experience that I have accumulated over several years.</prop>
+        <prop name="experiences" title="Work Experience" type="object-list">
+        <item index="0">
+          <field name="title" title="Job Title" type="text">Web developer intern</field>
+          <field name="company" title="Company" type="text">WEB-BOX, Tarnobrzeg PL</field>
+          <field name="period" title="Time Period" type="text">2023</field>
+          <field name="description" title="Description" type="text">During this internship, I focused on two key areas: creating Wordpress plugins and managing website content, plugins, and settings.</field>
+          <field name="technologies" title="Technologies" type="object-list">
+        <item index="0">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+        <item index="1">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+        <item index="2">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+        <item index="3">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+      </field>
+        </item>
+        <item index="1">
+          <field name="title" title="Job Title" type="text">Frontend developer &amp; UI designer</field>
+          <field name="company" title="Company" type="text">Freelancing, remote</field>
+          <field name="period" title="Time Period" type="text">2023 - 2024</field>
+          <field name="description" title="Description" type="text">As a freelancer, I specialized in graphic design using Figma and website development using Next.js with Sanity CMS. I undertook projects independently, from design conceptualization to final implementation, ensuring client satisfaction.</field>
+          <field name="technologies" title="Technologies" type="object-list">
+        <item index="0">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+        <item index="1">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+        <item index="2">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+        <item index="3">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+      </field>
+        </item>
+        <item index="2">
+          <field name="title" title="Job Title" type="text">Frontend developer intern</field>
+          <field name="company" title="Company" type="text">Chop-chop, remote</field>
+          <field name="period" title="Time Period" type="text">2024</field>
+          <field name="description" title="Description" type="text">During my internship at Chop-Chop, I collaborated with an experienced IT team, focusing on tasks in Next.js. This experience provided valuable insights into teamwork and advanced my proficiency in Next.js.</field>
+          <field name="technologies" title="Technologies" type="object-list">
+        <item index="0">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+        <item index="1">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+        <item index="2">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+        <item index="3">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+      </field>
+        </item>
+        <item index="3">
+          <field name="title" title="Job Title" type="text">Frontend developer &amp; UI designer</field>
+          <field name="company" title="Company" type="text">GeoScan, remote</field>
+          <field name="period" title="Time Period" type="text">2024 - present</field>
+          <field name="description" title="Description" type="text">At GeoScan, I collaborate with frontend, backend, and GIS specialists to build geoscan-app.com — a platform for generating real estate reports. I&apos;m responsible for developing and maintaining the frontend, as well as designing UI/UX to ensure a clear and intuitive user experience.</field>
+          <field name="technologies" title="Technologies" type="object-list">
+        <item index="0">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+        <item index="1">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+        <item index="2">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+        <item index="3">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+        <item index="4">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+      </field>
+        </item>
+      </prop>
+        <prop name="timeline-style" title="Timeline Styling" type="object">
+        <field name="lineColor" title="Timeline Line Color" type="color">#e5e7eb</field>
+        <field name="dotColor" title="Timeline Dot Color" type="color">#3b82f6</field>
+        <field name="showIcons" title="Show Company Icons" type="boolean">true</field>
+      </prop>
+      </props>
+    </node>
+
+    <node id="projects-section" title="Projects Section" x="1129.7558452198637" y="281.3100804971299" z="0">
+      <description>Showcase of personal and professional projects with images, descriptions, technologies, and links to live demos and repositories</description>
+      <props>
+        <prop name="projects-section-heading" title="Section Heading" type="text">My Projects</prop>
+        <prop name="projects-section-description" title="Section Description" type="text">Projects I worked on. Each of them containing its own case study.</prop>
+        <prop name="projects" title="Projects List" type="object-list">
+        <item index="0">
+          <field name="title" title="Project Title" type="text">Next-starter</field>
+          <field name="description" title="Project Description" type="text">A Next.js starter template, packed with features like TypeScript, Tailwind CSS, Next-auth, Eslint, Stripe, testing tools and more.</field>
+          <field name="image" title="Project Image" type="text">/images/project-2.webp</field>
+          <field name="technologies" title="Technologies Used" type="object-list">
+        <item index="0">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+        <item index="1">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+        <item index="2">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+        <item index="3">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+        <item index="4">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+      </field>
+          <field name="previewUrl" title="Live Preview URL" type="text">https://next-starter-skolaczk.vercel.app</field>
+          <field name="githubUrl" title="GitHub Repository" type="text">https://github.com/Skolaczk/next-starter</field>
+          <field name="featured" title="Featured Project" type="boolean">true</field>
+        </item>
+        <item index="1">
+          <field name="title" title="Project Title" type="text">SocialHub</field>
+          <field name="description" title="Project Description" type="text">SocialHub is a next-generation social media app developed using Next.js and Nest.js.</field>
+          <field name="image" title="Project Image" type="text">/images/project-1.webp</field>
+          <field name="technologies" title="Technologies Used" type="object-list">
+        <item index="0">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+        <item index="1">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+        <item index="2">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+        <item index="3">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+        <item index="4">
+          <field name="tech" title="Technology" type="text"></field>
+        </item>
+      </field>
+          <field name="previewUrl" title="Live Preview URL" type="text">https://socialhub-ms.vercel.app/</field>
+          <field name="githubUrl" title="GitHub Repository" type="text">https://github.com/Skolaczk/SocialHub</field>
+          <field name="featured" title="Featured Project" type="boolean">true</field>
+        </item>
+      </prop>
+        <prop name="projects-section-layout" title="Layout Settings" type="object">
+        <field name="displayStyle" title="Display Style" type="select">
+          <value>cards</value>
+          <options>
+          <option>cards</option>
+          <option>list</option>
+          <option>grid</option>
+          </options>
+        </field>
+        <field name="itemsPerRow" title="Projects Per Row" type="select">
+          <value>2</value>
+          <options>
+          <option>1</option>
+          <option>2</option>
+          <option>3</option>
+          </options>
+        </field>
+        <field name="showTechnologies" title="Show Technology Tags" type="boolean">true</field>
+        <field name="showLinks" title="Show Project Links" type="boolean">true</field>
+      </prop>
+      </props>
+    </node>
+
+    <node id="contact-section" title="Contact Section" x="1521.3721734225057" y="532" z="0">
+      <description>Contact form section with heading, description, email address, and contact form with email and message fields</description>
+      <props>
+        <prop name="contact-section-heading" title="Section Heading" type="text">Get In Touch</prop>
+        <prop name="contact-email" title="Contact Email" type="text">skolakmichal1@gmail.com</prop>
+        <prop name="description-prefix" title="Description Prefix" type="text">Please contact me directly at</prop>
+        <prop name="description-suffix" title="Description Suffix" type="text">or through this form.</prop>
+        <prop name="form-settings" title="Contact Form" type="object">
+        <field name="emailLabel" title="Email Field Label" type="text">Email</field>
+        <field name="emailPlaceholder" title="Email Placeholder" type="text">hello@gmail.com</field>
+        <field name="messageLabel" title="Message Field Label" type="text">Message</field>
+        <field name="messagePlaceholder" title="Message Placeholder" type="text">Hello! What&apos;s up?</field>
+        <field name="submitButtonText" title="Submit Button Text" type="text">Submit</field>
+        <field name="enabled" title="Enable Contact Form" type="boolean">true</field>
+      </prop>
+        <prop name="success-messages" title="Form Messages" type="object">
+        <field name="successMessage" title="Success Message" type="text">Thank you! Your message has been sent.</field>
+        <field name="errorMessage" title="Error Message" type="text">Sorry, there was an error sending your message.</field>
+      </prop>
+      </props>
+    </node>
+
+    <node id="header-navigation" title="Header Navigation" x="1134.031046462688" y="-174.20160994259692" z="0">
+      <description>Site header with responsive navigation menu, theme toggle, and mobile menu dialog</description>
+      <props>
+        <prop name="navigation-links" title="Navigation Links" type="object-list">
+        <item index="0">
+          <field name="name" title="Link Name" type="text">Home</field>
+          <field name="hash" title="Section Hash" type="text">#home</field>
+          <field name="visible" title="Show Link" type="boolean">true</field>
+        </item>
+        <item index="1">
+          <field name="name" title="Link Name" type="text">About</field>
+          <field name="hash" title="Section Hash" type="text">#about</field>
+          <field name="visible" title="Show Link" type="boolean">true</field>
+        </item>
+        <item index="2">
+          <field name="name" title="Link Name" type="text">Experience</field>
+          <field name="hash" title="Section Hash" type="text">#experience</field>
+          <field name="visible" title="Show Link" type="boolean">true</field>
+        </item>
+        <item index="3">
+          <field name="name" title="Link Name" type="text">Projects</field>
+          <field name="hash" title="Section Hash" type="text">#projects</field>
+          <field name="visible" title="Show Link" type="boolean">true</field>
+        </item>
+        <item index="4">
+          <field name="name" title="Link Name" type="text">Contact</field>
+          <field name="hash" title="Section Hash" type="text">#contact</field>
+          <field name="visible" title="Show Link" type="boolean">true</field>
+        </item>
+      </prop>
+        <prop name="mobile-menu" title="Mobile Menu" type="object">
+        <field name="buttonText" title="Mobile Menu Button Text" type="text">Menu</field>
+        <field name="dialogTitle" title="Mobile Dialog Title" type="text">Navigation</field>
+        <field name="enabled" title="Enable Mobile Menu" type="boolean">true</field>
+      </prop>
+        <prop name="header-styling" title="Header Styling" type="object">
+        <field name="position" title="Header Position" type="select">
+          <value>sticky</value>
+          <options>
+          <option>sticky</option>
+          <option>fixed</option>
+          <option>static</option>
+          </options>
+        </field>
+        <field name="backgroundColor" title="Background Color" type="color">rgba(255, 255, 255, 0.8)</field>
+        <field name="backdropBlur" title="Enable Backdrop Blur" type="boolean">true</field>
+        <field name="border" title="Show Border" type="boolean">true</field>
+      </prop>
+        <prop name="theme-toggle" title="Theme Toggle" type="object">
+        <field name="enabled" title="Enable Theme Toggle" type="boolean">true</field>
+        <field name="showOnMobile" title="Show on Mobile" type="boolean">true</field>
+        <field name="showOnDesktop" title="Show on Desktop" type="boolean">true</field>
+      </prop>
+      </props>
+    </node>
+
+    <node id="footer-section" title="Footer Section" x="1958.05187214773" y="-17.481921574244506" z="0">
+      <description>Simple footer with copyright information and author attribution link</description>
+      <props>
+        <prop name="copyright-text" title="Copyright Text" type="text">All rights reserved.</prop>
+        <prop name="author-name" title="Author Name" type="text">Michał Skolak</prop>
+        <prop name="author-link" title="Author Profile Link" type="text">https://github.com/Skolaczk</prop>
+        <prop name="show-year" title="Show Current Year" type="boolean">true</prop>
+        <prop name="footer-styling" title="Footer Styling" type="object">
+        <field name="textColor" title="Text Color" type="color">#6b7280</field>
+        <field name="fontSize" title="Font Size" type="select">
+          <value>small</value>
+          <options>
+          <option>small</option>
+          <option>medium</option>
+          <option>large</option>
+          </options>
+        </field>
+        <field name="alignment" title="Text Alignment" type="select">
+          <value>center</value>
+          <options>
+          <option>left</option>
+          <option>center</option>
+          <option>right</option>
+          </options>
+        </field>
+      </prop>
+      </props>
+    </node>
+
+    <node id="theme-system" title="Theme System">
+      <description>Dark/light theme toggle system with floating action button for theme switching</description>
+      <props>
+        <prop name="default-theme" title="Default Theme" type="select">
+          <value>system</value>
+          <options>
+          <option>light</option>
+          <option>dark</option>
+          <option>system</option>
+          </options>
+        </prop>
+        <prop name="toggle-button" title="Theme Toggle Button" type="object">
+        <field name="position" title="Button Position" type="select">
+          <value>bottom-right</value>
+          <options>
+          <option>bottom-left</option>
+          <option>bottom-right</option>
+          <option>top-left</option>
+          <option>top-right</option>
+          </options>
+        </field>
+        <field name="showOnDesktop" title="Show on Desktop" type="boolean">true</field>
+        <field name="showOnMobile" title="Show on Mobile" type="boolean">false</field>
+        <field name="size" title="Button Size" type="select">
+          <value>medium</value>
+          <options>
+          <option>small</option>
+          <option>medium</option>
+          <option>large</option>
+          </options>
+        </field>
+      </prop>
+        <prop name="theme-colors" title="Theme Colors" type="object">
+        <field name="lightBackground" title="Light Mode Background" type="color">#ffffff</field>
+        <field name="darkBackground" title="Dark Mode Background" type="color">#0a0a0a</field>
+        <field name="lightText" title="Light Mode Text" type="color">#000000</field>
+        <field name="darkText" title="Dark Mode Text" type="color">#ffffff</field>
+      </prop>
+      </props>
+    </node>
   </nodes>
 
   <edges>
+    <edge id="about-section-skills-showcase" source="about-section" target="skills-showcase" role="includes"/>
+    <edge id="header-navigation-intro-section" source="header-navigation" target="intro-section" role="navigates-to"/>
+    <edge id="header-navigation-about-section" source="header-navigation" target="about-section" role="navigates-to"/>
+    <edge id="header-navigation-experience-section" source="header-navigation" target="experience-section" role="navigates-to"/>
+    <edge id="header-navigation-projects-section" source="header-navigation" target="projects-section" role="navigates-to"/>
+    <edge id="header-navigation-contact-section" source="header-navigation" target="contact-section" role="navigates-to"/>
+    <edge id="intro-section-contact-section" source="intro-section" target="contact-section" role="links-to"/>
+    <edge id="header-navigation-theme-system" source="header-navigation" target="theme-system" role="includes"/>
+    <edge id="footer-section-intro-section" source="footer-section" target="intro-section" role="references"/>
   </edges>
 </graph>
